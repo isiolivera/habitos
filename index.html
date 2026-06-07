@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Mi mes · hábitos</title>
+
+<!-- Tailwind CSS (CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink:    '#14181a',  // texto principal
+          muted:  '#7a8085',  // texto secundario
+          line:   '#ececec',  // bordes
+          soft:   '#f6f7f7',  // gris muy suave
+          grass:  '#12a75e',  // acento principal (verde)
+          flame:  '#f97316',  // racha
+          water:  '#2e9bd6',  // agua
+          treat:  '#eab308',  // comida libre
+        },
+        fontFamily: {
+          display: ['"Bricolage Grotesque"','system-ui','sans-serif'],
+          body:    ['"Plus Jakarta Sans"','system-ui','sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  html,body{ background:#fff; color:#14181a; font-family:'Plus Jakarta Sans',system-ui,sans-serif; -webkit-tap-highlight-color:transparent; }
+  h1,h2,h3{ font-family:'Bricolage Grotesque',system-ui,sans-serif; }
+
+  .card{ background:#fff; border:1px solid #ececec; border-radius:20px; }
+  .tap{ transition:transform .12s ease, background .15s ease, border-color .15s ease, color .15s ease; }
+  .tap:active{ transform:scale(.96); }
+
+  @keyframes rise{ from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .rise{ animation:rise .45s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes pop{ 0%{transform:scale(.8);opacity:0} 60%{transform:scale(1.12)} 100%{transform:scale(1);opacity:1} }
+  .pop{ animation:pop .35s ease both; }
+
+  .eyebrow{ letter-spacing:.16em; }
+  /* Oculta spinners del input number en móvil */
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+</style>
+</head>
+
+<body class="min-h-screen">
+<!-- Contenedor mobile-first: una sola columna, centrado y angosto -->
+<div class="max-w-md mx-auto px-4 pb-16 pt-6">
+
+  <!-- ====================== ENCABEZADO ====================== -->
+  <header class="rise mb-5">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="eyebrow text-[10px] uppercase text-grass font-bold">Mi mes · jun → jul</p>
+        <h1 class="text-3xl font-bold leading-none mt-1">Mejor versión</h1>
+      </div>
+      <!-- Cuenta regresiva a vacaciones -->
+      <div class="text-right">
+        <p id="countdown" class="text-3xl font-display font-bold leading-none">–</p>
+        <p class="text-[10px] text-muted mt-1">días para vacaciones</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================== MÉTRICAS (racha / cumplidos / %) ====================== -->
+  <section class="rise grid grid-cols-3 gap-3 mb-5" style="animation-delay:.05s">
+    <div class="card p-3 text-center">
+      <p id="racha" class="text-2xl font-display font-bold text-flame leading-none">0</p>
+      <p class="text-[11px] text-muted mt-1">🔥 racha</p>
+    </div>
+    <div class="card p-3 text-center">
+      <p id="cumplidos" class="text-2xl font-display font-bold text-grass leading-none">0</p>
+      <p class="text-[11px] text-muted mt-1">días cumplidos</p>
+    </div>
+    <div class="card p-3 text-center">
+      <p id="porcentaje" class="text-2xl font-display font-bold leading-none">0%</p>
+      <p class="text-[11px] text-muted mt-1">del mes</p>
+    </div>
+  </section>
+
+  <!-- ====================== NAVEGADOR DE DÍA ====================== -->
+  <div class="rise flex items-center justify-between mb-4" style="animation-delay:.1s">
+    <button id="prevDay" class="tap w-10 h-10 rounded-full border border-line grid place-items-center text-muted text-lg">‹</button>
+    <button id="todayBtn" class="tap px-4 py-2 rounded-full font-semibold capitalize">Hoy</button>
+    <button id="nextDay" class="tap w-10 h-10 rounded-full border border-line grid place-items-center text-muted text-lg">›</button>
+  </div>
+
+  <!-- ====================== REGISTRO DEL DÍA ====================== -->
+  <section class="rise card p-5 mb-5" style="animation-delay:.15s">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-bold">Registro del día</h2>
+      <span id="savedTag" class="text-[11px] text-grass font-bold opacity-0 transition-opacity">guardado ✓</span>
+    </div>
+
+    <!-- Peso (opcional, discreto) -->
+    <div class="flex items-center justify-between mb-5 pb-5 border-b border-line">
+      <label for="peso" class="text-sm text-muted">Peso de hoy</label>
+      <div class="flex items-baseline gap-1">
+        <input id="peso" type="number" step="0.1" min="0" inputmode="decimal" placeholder="—"
+          class="w-20 text-right text-2xl font-display font-bold bg-transparent outline-none" />
+        <span class="text-muted text-sm">kg</span>
+      </div>
+    </div>
+
+    <!-- Hábitos: 4 toggles grandes (cómodos para el dedo) -->
+    <!-- Para AGREGAR o cambiar hábitos, edita el arreglo HABITOS en el <script>. -->
+    <div id="habitos" class="grid grid-cols-2 gap-3 mb-5"></div>
+
+    <!-- Comida libre (1 vez por semana) -->
+    <button id="comidaLibre" class="tap w-full rounded-2xl border-2 border-dashed border-line py-3 px-4 flex items-center justify-between mb-5">
+      <span class="flex items-center gap-2 font-semibold">🍕 Comida libre</span>
+      <span id="libreEstado" class="text-xs text-muted">disponible esta semana</span>
+    </button>
+
+    <!-- Estado de ánimo -->
+    <div>
+      <p class="text-sm font-semibold mb-2">¿Cómo me sentí hoy?</p>
+      <div id="animo" class="flex justify-between gap-2 mb-3"></div>
+      <input id="nota" type="text" maxlength="120" placeholder="Una nota para mí (opcional)…"
+        class="w-full bg-soft rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-grass/30" />
+    </div>
+  </section>
+
+  <!-- ====================== CALENDARIO DEL MES ====================== -->
+  <section class="rise card p-5 mb-5" style="animation-delay:.2s">
+    <h2 class="text-xl font-bold mb-1">Junio</h2>
+    <p class="text-xs text-muted mb-4">El color se intensifica según cuántos hábitos cumpliste ese día.</p>
+    <div class="grid grid-cols-7 gap-1.5 text-center text-[10px] text-muted mb-1">
+      <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+    </div>
+    <div id="calendario" class="grid grid-cols-7 gap-1.5"></div>
+  </section>
+
+  <!-- ====================== EVOLUCIÓN DEL PESO ====================== -->
+  <section class="rise card p-5 mb-5" style="animation-delay:.25s">
+    <div class="flex items-center justify-between mb-1">
+      <h2 class="text-xl font-bold">Peso</h2>
+      <span id="pesoResumen" class="text-xs text-muted"></span>
+    </div>
+    <div id="chart" class="w-full mt-2"></div>
+  </section>
+
+  <footer class="text-center text-[11px] text-muted leading-relaxed px-4">
+    <span id="frase"></span><br><br>
+    Tus datos se guardan solo en este teléfono/navegador.
+  </footer>
+</div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN DEL RETO  ← edita fechas aquí si lo extiendes
+   ===================================================================== */
+const INICIO = '2026-06-01';
+const FIN    = '2026-07-01';   // día en que sales de vacaciones (incluido)
+
+/* Hábitos del día. Para agregar/quitar: edita este arreglo.
+   "key" debe ser único; "meta" cuenta para la racha y el calendario. */
+const HABITOS = [
+  { key:'deporte',  emoji:'🏋️', label:'Deporte' },
+  { key:'caminata', emoji:'🚶', label:'Caminata 30 min' },
+  { key:'agua',     emoji:'💧', label:'2 L de agua' },
+  { key:'comida',   emoji:'🥗', label:'Comí bien' },
+];
+
+/* Escala de ánimo. Edita libremente los emojis/etiquetas. */
+const ANIMOS = [
+  { v:1, emoji:'😞', label:'mal' },
+  { v:2, emoji:'😕', label:'bajón' },
+  { v:3, emoji:'😐', label:'neutro' },
+  { v:4, emoji:'🙂', label:'bien' },
+  { v:5, emoji:'😄', label:'genial' },
+];
+
+/* Frases de ánimo (rotan al azar). Sin presión, solo buena onda. */
+const FRASES = [
+  'Pequeños pasos, gran cambio.',
+  'Lo constante le gana a lo perfecto.',
+  'Hoy cuenta, aunque sea un poquito.',
+  'Estás más cerca que ayer.',
+];
+
+/* Un día se considera "cumplido" si marcaste al menos 3 de los 4 hábitos.
+   Cámbialo aquí si quieres que sea más o menos exigente. */
+const META_CUMPLIDO = 3;
+
+/* =====================================================================
+   PERSISTENCIA — localStorage con respaldo en memoria
+   ===================================================================== */
+const Store = {
+  KEY:'mi_mes_v1', _mem:null,
+  load(){ try{ const r=localStorage.getItem(this.KEY); return r?JSON.parse(r):null; }catch(e){ return this._mem; } },
+  save(d){ this._mem=d; try{ localStorage.setItem(this.KEY,JSON.stringify(d)); }catch(e){} }
+};
+
+/* =====================================================================
+   ESTADO Y FECHAS
+   ===================================================================== */
+let state = Store.load() || { logs:{} };
+
+function toISO(d){ return d.toISOString().slice(0,10); }
+function fromISO(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function addDays(iso,n){ const d=fromISO(iso); d.setDate(d.getDate()+n); return toISO(d); }
+function clamp(iso){ return iso<INICIO?INICIO : iso>FIN?FIN : iso; }
+function diffDias(a,b){ return Math.round((fromISO(b)-fromISO(a))/86400000); }
+function dentroDelReto(iso){ return iso>=INICIO && iso<=FIN; }
+
+// Día inicial: hoy si cae en el reto; si no, el inicio.
+let fechaActual = clamp(toISO(new Date()));
+
+function logDe(iso){ return state.logs[iso] || {}; }
+function setLog(iso, patch){
+  state.logs[iso] = { ...logDe(iso), ...patch };
+  Store.save(state);
+  pulsoGuardado();
+}
+
+// Cuántos hábitos cumplió un día
+function nHabitos(iso){ const l=logDe(iso); return HABITOS.filter(h=>l[h.key]).length; }
+function diaCumplido(iso){ return nHabitos(iso) >= META_CUMPLIDO; }
+
+// Lunes de la semana de una fecha (para limitar la comida libre)
+function lunesDe(iso){ const d=fromISO(iso); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return toISO(d); }
+// ¿Ya se usó la comida libre esta semana? (devuelve la fecha usada o null)
+function libreUsadaEnSemana(iso){
+  const lun = lunesDe(iso);
+  for(let i=0;i<7;i++){ const dia=addDays(lun,i); if(logDe(dia).libre) return dia; }
+  return null;
+}
+
+/* =====================================================================
+   RENDER
+   ===================================================================== */
+function fmtDia(iso){ return fromISO(iso).toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'}); }
+
+// Construye los toggles de hábitos una sola vez
+function montarHabitos(){
+  document.getElementById('habitos').innerHTML = HABITOS.map(h => `
+    <button data-habit="${h.key}" class="tap rounded-2xl border border-line py-4 px-3 text-left">
+      <span class="text-2xl block mb-1">${h.emoji}</span>
+      <span class="text-sm font-semibold block leading-tight">${h.label}</span>
+    </button>`).join('');
+  document.querySelectorAll('[data-habit]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k=btn.dataset.habit, nuevo=!logDe(fechaActual)[k];
+      setLog(fechaActual,{[k]:nuevo});
+      pintarHabito(btn,nuevo); pintarMetricas(); pintarCalendario();
+    });
+  });
+}
+function pintarHabito(btn,on){
+  if(on){ btn.style.background='#12a75e'; btn.style.borderColor='#12a75e'; btn.style.color='#fff'; }
+  else  { btn.style.background='#fff';    btn.style.borderColor='#ececec'; btn.style.color='#14181a'; }
+}
+
+// Construye la escala de ánimo una sola vez
+function montarAnimo(){
+  document.getElementById('animo').innerHTML = ANIMOS.map(a => `
+    <button data-animo="${a.v}" class="tap flex-1 aspect-square rounded-xl border border-line grid place-items-center text-2xl" title="${a.label}">${a.emoji}</button>`).join('');
+  document.querySelectorAll('[data-animo]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const v=Number(btn.dataset.animo);
+      const actual=logDe(fechaActual).animo;
+      setLog(fechaActual,{animo: actual===v ? null : v});  // volver a tocar lo deselecciona
+      pintarAnimo();
+    });
+  });
+}
+function pintarAnimo(){
+  const sel=logDe(fechaActual).animo;
+  document.querySelectorAll('[data-animo]').forEach(btn=>{
+    const on=Number(btn.dataset.animo)===sel;
+    btn.style.background = on?'#fff7e6':'#fff';
+    btn.style.borderColor = on?'#eab308':'#ececec';
+    btn.style.transform = on?'scale(1.06)':'scale(1)';
+  });
+}
+
+function pintarMetricas(){
+  // Racha: días cumplidos consecutivos terminando hoy (o en el día visible si es <= hoy real)
+  const tope = clamp(toISO(new Date()));
+  let r=0, cursor=tope;
+  while(dentroDelReto(cursor) && diaCumplido(cursor)){ r++; cursor=addDays(cursor,-1); }
+  document.getElementById('racha').textContent = r;
+
+  // Días cumplidos en todo el reto
+  const cumplidos = Object.keys(state.logs).filter(k=>dentroDelReto(k)&&diaCumplido(k)).length;
+  document.getElementById('cumplidos').textContent = cumplidos;
+
+  // Porcentaje sobre los días transcurridos del reto
+  const totalReto = diffDias(INICIO,FIN)+1;            // 30 (+1 incluyendo el 1 de julio)
+  const transcurridos = Math.min(totalReto, Math.max(1, diffDias(INICIO,tope)+1));
+  document.getElementById('porcentaje').textContent = Math.round(cumplidos/transcurridos*100)+'%';
+
+  // Cuenta regresiva a vacaciones
+  const faltan = Math.max(0, diffDias(tope,FIN));
+  document.getElementById('countdown').textContent = faltan;
+}
+
+function pintarLibre(){
+  const btn=document.getElementById('comidaLibre');
+  const estado=document.getElementById('libreEstado');
+  const usadaEn=libreUsadaEnSemana(fechaActual);
+  const esHoyLaUsada = logDe(fechaActual).libre;
+
+  if(esHoyLaUsada){
+    btn.style.background='#fffbeb'; btn.style.borderColor='#eab308'; btn.style.borderStyle='solid';
+    estado.textContent='usada hoy ✓'; estado.style.color='#b7860b';
+  } else if(usadaEn){
+    btn.style.background='#fff'; btn.style.borderColor='#ececec'; btn.style.borderStyle='dashed';
+    estado.textContent='ya la usaste el '+fromISO(usadaEn).getDate(); estado.style.color='#7a8085';
+  } else {
+    btn.style.background='#fff'; btn.style.borderColor='#ececec'; btn.style.borderStyle='dashed';
+    estado.textContent='disponible esta semana'; estado.style.color='#7a8085';
+  }
+}
+
+function pintarCalendario(){
+  const cont=document.getElementById('calendario');
+  const tonos=['#eef0ef','#c9efd9','#8fdcb0','#44c285','#12a75e']; // 0..4 hábitos
+  const primero=fromISO(INICIO);
+  const offset=(primero.getDay()+6)%7;     // cuántas celdas vacías antes del día 1
+  const totalDias=diffDias(INICIO,FIN)+1;
+  let html='';
+  for(let i=0;i<offset;i++) html+='<span></span>';
+  for(let i=0;i<totalDias;i++){
+    const iso=addDays(INICIO,i);
+    const n=nHabitos(iso);
+    const num=fromISO(iso).getDate();
+    const sel=iso===fechaActual;
+    const esHoy=iso===clamp(toISO(new Date()));
+    const libre=logDe(iso).libre;
+    html+=`<button data-dia="${iso}" class="tap aspect-square rounded-lg grid place-items-center text-xs font-semibold relative"
+      style="background:${tonos[n]};color:${n>=2?'#fff':'#14181a'};
+             ${sel?'outline:2px solid #14181a;outline-offset:1px;':''}
+             ${esHoy&&!sel?'outline:2px solid #12a75e;outline-offset:1px;':''}">
+      ${num}${libre?'<span class="absolute top-0.5 right-0.5 text-[8px]">🍕</span>':''}
+    </button>`;
+  }
+  cont.innerHTML=html;
+  cont.querySelectorAll('[data-dia]').forEach(b=>{
+    b.onclick=()=>{ fechaActual=b.dataset.dia; pintarTodo(); };
+  });
+}
+
+function pintarGrafico(){
+  const puntos=Object.keys(state.logs)
+    .filter(k=>dentroDelReto(k)&&logDe(k).peso!=null&&logDe(k).peso!=='')
+    .sort().map(k=>({y:Number(state.logs[k].peso)}));
+  const cont=document.getElementById('chart');
+  const resumen=document.getElementById('pesoResumen');
+  if(puntos.length<2){
+    cont.innerHTML='<p class="text-sm text-muted py-4 text-center">Registra peso ≥ 2 días para ver la tendencia.</p>';
+    resumen.textContent = puntos.length===1?`${puntos[0].y} kg`:'';
+    return;
+  }
+  const W=340,H=130,P=22;
+  const ys=puntos.map(p=>p.y); let min=Math.min(...ys),max=Math.max(...ys);
+  if(min===max){min-=1;max+=1;}
+  const sx=i=>P+(i/(puntos.length-1))*(W-2*P);
+  const sy=v=>H-P-((v-min)/(max-min))*(H-2*P);
+  const linea=puntos.map((p,i)=>`${sx(i).toFixed(1)},${sy(p.y).toFixed(1)}`).join(' ');
+  const area=`M ${sx(0)},${H-P} L ${linea.replace(/ /g,' L ')} L ${sx(puntos.length-1)},${H-P} Z`;
+  const dots=puntos.map((p,i)=>`<circle cx="${sx(i).toFixed(1)}" cy="${sy(p.y).toFixed(1)}" r="3" fill="#12a75e"/>`).join('');
+  cont.innerHTML=`<svg viewBox="0 0 ${W} ${H}" class="w-full">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#12a75e" stop-opacity=".22"/><stop offset="100%" stop-color="#12a75e" stop-opacity="0"/>
+    </linearGradient></defs>
+    <path d="${area}" fill="url(#g)"/>
+    <polyline points="${linea}" fill="none" stroke="#12a75e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}</svg>`;
+  const delta=(puntos[puntos.length-1].y-puntos[0].y).toFixed(1);
+  resumen.textContent=`${puntos.length} registros · ${delta>0?'+':''}${delta} kg`;
+}
+
+function pintarTodo(){
+  const log=logDe(fechaActual);
+  // Etiqueta de fecha
+  document.getElementById('todayBtn').textContent =
+    (fechaActual===clamp(toISO(new Date()))) ? 'Hoy' : fmtDia(fechaActual);
+  // Habilitar/limitar navegación al rango del reto
+  document.getElementById('prevDay').disabled = fechaActual<=INICIO;
+  document.getElementById('nextDay').disabled = fechaActual>=FIN;
+  document.getElementById('prevDay').style.opacity = fechaActual<=INICIO?'.3':'1';
+  document.getElementById('nextDay').style.opacity = fechaActual>=FIN?'.3':'1';
+
+  // Registro
+  document.getElementById('peso').value = log.peso ?? '';
+  document.getElementById('nota').value = log.nota ?? '';
+  document.querySelectorAll('[data-habit]').forEach(b=>pintarHabito(b,!!log[b.dataset.habit]));
+  pintarAnimo(); pintarLibre();
+
+  // Resto
+  pintarMetricas(); pintarCalendario(); pintarGrafico();
+}
+
+let savedTimer;
+function pulsoGuardado(){
+  const t=document.getElementById('savedTag'); t.style.opacity='1';
+  clearTimeout(savedTimer); savedTimer=setTimeout(()=>t.style.opacity='0',1200);
+}
+
+/* =====================================================================
+   EVENTOS
+   ===================================================================== */
+document.getElementById('prevDay').onclick=()=>{ fechaActual=clamp(addDays(fechaActual,-1)); pintarTodo(); };
+document.getElementById('nextDay').onclick=()=>{ fechaActual=clamp(addDays(fechaActual, 1)); pintarTodo(); };
+document.getElementById('todayBtn').onclick=()=>{ fechaActual=clamp(toISO(new Date())); pintarTodo(); };
+
+document.getElementById('peso').addEventListener('input',e=>{
+  setLog(fechaActual,{peso:e.target.value===''?null:Number(e.target.value)}); pintarGrafico();
+});
+document.getElementById('nota').addEventListener('input',e=>{ setLog(fechaActual,{nota:e.target.value}); });
+
+// Comida libre: solo una por semana
+document.getElementById('comidaLibre').onclick=()=>{
+  const yaHoy=logDe(fechaActual).libre;
+  if(yaHoy){ setLog(fechaActual,{libre:false}); pintarLibre(); pintarCalendario(); return; }
+  const usadaEn=libreUsadaEnSemana(fechaActual);
+  if(usadaEn){
+    const btn=document.getElementById('comidaLibre');
+    btn.classList.add('pop'); setTimeout(()=>btn.classList.remove('pop'),350);
+    return; // ya hay una esta semana
+  }
+  setLog(fechaActual,{libre:true}); pintarLibre(); pintarCalendario();
+};
+
+/* =====================================================================
+   ARRANQUE
+   ===================================================================== */
+montarHabitos(); montarAnimo();
+document.getElementById('frase').textContent = FRASES[Math.floor(Math.random()*FRASES.length)];
+pintarTodo();
+</script>
+</body>
+</html>
