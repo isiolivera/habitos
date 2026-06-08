@@ -111,6 +111,12 @@
 
     <div id="habitos" class="grid grid-cols-2 gap-3 mb-5"></div>
 
+    <!-- Agua: 4 botones individuales -->
+    <div class="mb-5">
+      <p class="text-sm font-semibold mb-3">💧 Hidratación del día</p>
+      <div id="agua" class="grid grid-cols-2 gap-3"></div>
+    </div>
+
     <button id="comidaLibre" class="tap w-full rounded-2xl border-2 border-dashed border-line py-3 px-4 flex items-center justify-between mb-5">
       <span class="flex items-center gap-2 font-semibold">🍕 Comida libre</span>
       <span id="libreEstado" class="text-xs text-muted">disponible esta semana</span>
@@ -172,7 +178,7 @@
     <div>
       <div class="flex items-center justify-between mb-3">
         <p class="text-sm font-bold">⚡ Pre-entreno <span class="text-muted font-normal text-xs">(Energía eficiente)</span></p>
-        <span class="text-xs font-bold text-grass bg-soft px-2 py-1 rounded-full">~195 kcal</span>
+        <span class="text-xs font-bold text-grass bg-soft px-2 py-1 rounded-full">~215 kcal</span>
       </div>
       
       <ul class="space-y-2 mb-3">
@@ -182,11 +188,11 @@
         </li>
         <li class="flex justify-between text-sm border-b border-line/50 pb-2">
           <span class="text-muted">Queso crema</span>
-          <span class="font-medium">1 cda (15 g) <span class="text-xs text-muted">(36 kcal)</span></span>
+          <span class="font-medium">25 g <span class="text-xs text-muted">(60 kcal)</span></span>
         </li>
         <li class="flex justify-between text-sm">
           <span class="text-muted">Mermelada de damasco</span>
-          <span class="font-medium">3 cdtas (15 g) <span class="text-xs text-muted">(9 kcal)</span></span>
+          <span class="font-medium">25 g <span class="text-xs text-muted">(15 kcal)</span></span>
         </li>
       </ul>
 
@@ -234,9 +240,19 @@ const FIN    = '2026-07-08';
 const HABITOS = [
   { key:'deporte',  emoji:'🏋️', label:'Deporte' },
   { key:'caminata', emoji:'🚶', label:'Caminata 30 min' },
-  { key:'agua',     emoji:'💧', label:'2 L de agua' },
   { key:'comida',   emoji:'🥗', label:'Comí bien' },
 ];
+
+/* Hábitos de agua (botones individuales) */
+const AGUA_HABITOS = [
+  { key:'agua_predesayuno', emoji:'💧', label:'Vaso pre-desayuno' },
+  { key:'agua_prealmuerzo', emoji:'💧', label:'Vaso pre-almuerzo' },
+  { key:'agua_preentreno',  emoji:'💧', label:'Vaso pre-entreno' },
+  { key:'agua_1l',          emoji:'💧', label:'1 L de agua' },
+];
+
+/* Un día se considera "cumplido" si marcaste al menos 5 de los 7 hábitos (3 originales + 4 de agua) */
+const META_CUMPLIDO = 5;
 
 const ANIMOS = [
   { v:1, emoji:'😞', label:'mal' },
@@ -253,13 +269,11 @@ const FRASES = [
   'Estás más cerca que ayer.',
 ];
 
-const META_CUMPLIDO = 3;
-
 /* =====================================================================
    PERSISTENCIA
    ===================================================================== */
 const Store = {
-  KEY:'mi_mes_v1', _mem:null,
+  KEY:'mi_mes_v2', _mem:null,
   load(){ try{ const r=localStorage.getItem(this.KEY); return r?JSON.parse(r):null; }catch(e){ return this._mem; } },
   save(d){ this._mem=d; try{ localStorage.setItem(this.KEY,JSON.stringify(d)); }catch(e){} }
 };
@@ -285,7 +299,13 @@ function setLog(iso, patch){
   pulsoGuardado();
 }
 
-function nHabitos(iso){ const l=logDe(iso); return HABITOS.filter(h=>l[h.key]).length; }
+// Todos los hábitos combinados (originales + agua)
+function todosLosHabitos(){ return [...HABITOS, ...AGUA_HABITOS]; }
+
+function nHabitos(iso){ 
+  const l=logDe(iso); 
+  return todosLosHabitos().filter(h=>l[h.key]).length; 
+}
 function diaCumplido(iso){ return nHabitos(iso) >= META_CUMPLIDO; }
 
 function lunesDe(iso){ const d=fromISO(iso); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return toISO(d); }
@@ -306,7 +326,7 @@ function montarHabitos(){
       <span class="text-2xl block mb-1">${h.emoji}</span>
       <span class="text-sm font-semibold block leading-tight">${h.label}</span>
     </button>`).join('');
-  document.querySelectorAll('[data-habit]').forEach(btn=>{
+  document.querySelectorAll('#habitos [data-habit]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const k=btn.dataset.habit, nuevo=!logDe(fechaActual)[k];
       setLog(fechaActual,{[k]:nuevo});
@@ -314,8 +334,29 @@ function montarHabitos(){
     });
   });
 }
+
+function montarAgua(){
+  document.getElementById('agua').innerHTML = AGUA_HABITOS.map(h => `
+    <button data-agua="${h.key}" class="tap rounded-2xl border border-line py-3 px-3 text-left flex items-center gap-2">
+      <span class="text-xl">${h.emoji}</span>
+      <span class="text-xs font-semibold leading-tight">${h.label}</span>
+    </button>`).join('');
+  document.querySelectorAll('[data-agua]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const k=btn.dataset.agua, nuevo=!logDe(fechaActual)[k];
+      setLog(fechaActual,{[k]:nuevo});
+      pintarAguaBoton(btn,nuevo); pintarMetricas(); pintarCalendario();
+    });
+  });
+}
+
 function pintarHabito(btn,on){
   if(on){ btn.style.background='#12a75e'; btn.style.borderColor='#12a75e'; btn.style.color='#fff'; }
+  else  { btn.style.background='#fff';    btn.style.borderColor='#ececec'; btn.style.color='#14181a'; }
+}
+
+function pintarAguaBoton(btn,on){
+  if(on){ btn.style.background='#e0f2fe'; btn.style.borderColor='#2e9bd6'; btn.style.color='#0c4a6e'; }
   else  { btn.style.background='#fff';    btn.style.borderColor='#ececec'; btn.style.color='#14181a'; }
 }
 
@@ -378,7 +419,7 @@ function pintarLibre(){
 
 function pintarCalendario(){
   const cont=document.getElementById('calendario');
-  const tonos=['#eef0ef','#c9efd9','#8fdcb0','#44c285','#12a75e'];
+  const tonos=['#eef0ef','#c9efd9','#8fdcb0','#8fdcb0','#44c285','#44c285','#12a75e','#12a75e'];
   const primero=fromISO(INICIO);
   const offset=(primero.getDay()+6)%7;
   const totalDias=diffDias(INICIO,FIN)+1;
@@ -386,13 +427,13 @@ function pintarCalendario(){
   for(let i=0;i<offset;i++) html+='<span></span>';
   for(let i=0;i<totalDias;i++){
     const iso=addDays(INICIO,i);
-    const n=nHabitos(iso);
+    const n=Math.min(nHabitos(iso), 7);
     const num=fromISO(iso).getDate();
     const sel=iso===fechaActual;
     const esHoy=iso===clamp(toISO(new Date()));
     const libre=logDe(iso).libre;
     html+=`<button data-dia="${iso}" class="tap aspect-square rounded-lg grid place-items-center text-xs font-semibold relative"
-      style="background:${tonos[n]};color:${n>=2?'#fff':'#14181a'};
+      style="background:${tonos[n]};color:${n>=3?'#fff':'#14181a'};
              ${sel?'outline:2px solid #14181a;outline-offset:1px;':''}
              ${esHoy&&!sel?'outline:2px solid #12a75e;outline-offset:1px;':''}">
       ${num}${libre?'<span class="absolute top-0.5 right-0.5 text-[8px]">🍕</span>':''}
@@ -445,7 +486,8 @@ function pintarTodo(){
 
   document.getElementById('peso').value = log.peso ?? '';
   document.getElementById('nota').value = log.nota ?? '';
-  document.querySelectorAll('[data-habit]').forEach(b=>pintarHabito(b,!!log[b.dataset.habit]));
+  document.querySelectorAll('#habitos [data-habit]').forEach(b=>pintarHabito(b,!!log[b.dataset.habit]));
+  document.querySelectorAll('[data-agua]').forEach(b=>pintarAguaBoton(b,!!log[b.dataset.agua]));
   pintarAnimo(); pintarLibre();
 
   pintarMetricas(); pintarCalendario(); pintarGrafico();
@@ -484,7 +526,7 @@ document.getElementById('comidaLibre').onclick=()=>{
 /* =====================================================================
    ARRANQUE
    ===================================================================== */
-montarHabitos(); montarAnimo();
+montarHabitos(); montarAgua(); montarAnimo();
 document.getElementById('frase').textContent = FRASES[Math.floor(Math.random()*FRASES.length)];
 pintarTodo();
 </script>
