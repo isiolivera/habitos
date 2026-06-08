@@ -12,14 +12,14 @@
     theme: {
       extend: {
         colors: {
-          ink:    '#14181a',  // texto principal
-          muted:  '#7a8085',  // texto secundario
-          line:   '#ececec',  // bordes
-          soft:   '#f6f7f7',  // gris muy suave
-          grass:  '#12a75e',  // acento principal (verde)
-          flame:  '#f97316',  // racha
-          water:  '#2e9bd6',  // agua
-          treat:  '#eab308',  // comida libre
+          ink:    '#14181a',
+          muted:  '#7a8085',
+          line:   '#ececec',
+          soft:   '#f6f7f7',
+          grass:  '#12a75e',
+          flame:  '#f97316',
+          water:  '#2e9bd6',
+          treat:  '#eab308',
         },
         fontFamily: {
           display: ['"Bricolage Grotesque"','system-ui','sans-serif'],
@@ -48,14 +48,12 @@
   .pop{ animation:pop .35s ease both; }
 
   .eyebrow{ letter-spacing:.16em; }
-  /* Oculta spinners del input number en móvil */
   input[type=number]::-webkit-outer-spin-button,
   input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 </style>
 </head>
 
 <body class="min-h-screen">
-<!-- Contenedor mobile-first: una sola columna, centrado y angosto -->
 <div class="max-w-md mx-auto px-4 pb-16 pt-6">
 
   <!-- ====================== ENCABEZADO ====================== -->
@@ -65,7 +63,6 @@
         <p class="eyebrow text-[10px] uppercase text-grass font-bold">Mi mes · jun → jul</p>
         <h1 class="text-3xl font-bold leading-none mt-1">Mejor versión</h1>
       </div>
-      <!-- Cuenta regresiva a vacaciones -->
       <div class="text-right">
         <p id="countdown" class="text-3xl font-display font-bold leading-none">–</p>
         <p class="text-[10px] text-muted mt-1">días para vacaciones</p>
@@ -73,7 +70,7 @@
     </div>
   </header>
 
-  <!-- ====================== MÉTRICAS (racha / cumplidos / %) ====================== -->
+  <!-- ====================== MÉTRICAS ====================== -->
   <section class="rise grid grid-cols-3 gap-3 mb-5" style="animation-delay:.05s">
     <div class="card p-3 text-center">
       <p id="racha" class="text-2xl font-display font-bold text-flame leading-none">0</p>
@@ -103,7 +100,6 @@
       <span id="savedTag" class="text-[11px] text-grass font-bold opacity-0 transition-opacity">guardado ✓</span>
     </div>
 
-    <!-- Peso (opcional, discreto) -->
     <div class="flex items-center justify-between mb-5 pb-5 border-b border-line">
       <label for="peso" class="text-sm text-muted">Peso de hoy</label>
       <div class="flex items-baseline gap-1">
@@ -113,22 +109,93 @@
       </div>
     </div>
 
-    <!-- Hábitos: 4 toggles grandes (cómodos para el dedo) -->
-    <!-- Para AGREGAR o cambiar hábitos, edita el arreglo HABITOS en el <script>. -->
     <div id="habitos" class="grid grid-cols-2 gap-3 mb-5"></div>
 
-    <!-- Comida libre (1 vez por semana) -->
     <button id="comidaLibre" class="tap w-full rounded-2xl border-2 border-dashed border-line py-3 px-4 flex items-center justify-between mb-5">
       <span class="flex items-center gap-2 font-semibold">🍕 Comida libre</span>
       <span id="libreEstado" class="text-xs text-muted">disponible esta semana</span>
     </button>
 
-    <!-- Estado de ánimo -->
     <div>
       <p class="text-sm font-semibold mb-2">¿Cómo me sentí hoy?</p>
       <div id="animo" class="flex justify-between gap-2 mb-3"></div>
       <input id="nota" type="text" maxlength="120" placeholder="Una nota para mí (opcional)…"
         class="w-full bg-soft rounded-xl px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-grass/30" />
+    </div>
+  </section>
+
+  <!-- ====================== ALIMENTACIÓN FIJA (CON DESGLOSE NUTRICIONAL) ====================== -->
+  <section class="rise card p-5 mb-5" style="animation-delay:.18s">
+    <h2 class="text-xl font-bold mb-1">Mi alimentación fija</h2>
+    <p class="text-xs text-muted mb-5">Cantidades exactas y calorías, para no tener que pensarlo.</p>
+
+    <!-- Desayuno Fijo -->
+    <div class="mb-6">
+      <div class="flex items-center justify-between mb-3">
+        <p class="text-sm font-bold">🌅 Desayuno Fijo <span class="text-muted font-normal text-xs">(Saciante y bajo IG)</span></p>
+        <span class="text-xs font-bold text-grass bg-soft px-2 py-1 rounded-full">~273 kcal</span>
+      </div>
+      
+      <ul class="space-y-2 mb-3">
+        <li class="flex justify-between text-sm border-b border-line/50 pb-2">
+          <span class="text-muted">Yogur natural entero</span>
+          <span class="font-medium">150 g <span class="text-xs text-muted">(128 kcal)</span></span>
+        </li>
+        <li class="flex justify-between text-sm border-b border-line/50 pb-2">
+          <span class="text-muted">Arándanos</span>
+          <span class="font-medium">60 g <span class="text-xs text-muted">(~½ taza · 35 kcal)</span></span>
+        </li>
+        <li class="flex justify-between text-sm border-b border-line/50 pb-2">
+          <span class="text-muted">Semillas de zapallo</span>
+          <span class="font-medium">8 g <span class="text-xs text-muted">(~25-30 u · 44 kcal)</span></span>
+        </li>
+        <li class="flex justify-between text-sm border-b border-line/50 pb-2">
+          <span class="text-muted">Semillas de maravilla</span>
+          <span class="font-medium">8 g <span class="text-xs text-muted">(~35-40 u · 44 kcal)</span></span>
+        </li>
+        <li class="flex justify-between text-sm">
+          <span class="text-muted">Linaza molida</span>
+          <span class="font-medium">4 g <span class="text-xs text-muted">(1 cdta rasa · 22 kcal)</span></span>
+        </li>
+      </ul>
+
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-block text-xs font-medium bg-soft border border-line rounded-full px-3 py-1.5">Yogur natural entero</span>
+        <span class="inline-block text-xs font-medium bg-soft border border-line rounded-full px-3 py-1.5">Arándanos</span>
+        <span class="inline-block text-xs font-medium bg-soft border border-line rounded-full px-3 py-1.5">Semillas de zapallo</span>
+        <span class="inline-block text-xs font-medium bg-soft border border-line rounded-full px-3 py-1.5">Semillas de maravilla</span>
+        <span class="inline-block text-xs font-medium bg-soft border border-line rounded-full px-3 py-1.5">Linaza molida</span>
+      </div>
+    </div>
+
+    <!-- Pre-entreno -->
+    <div>
+      <div class="flex items-center justify-between mb-3">
+        <p class="text-sm font-bold">⚡ Pre-entreno <span class="text-muted font-normal text-xs">(Energía eficiente)</span></p>
+        <span class="text-xs font-bold text-grass bg-soft px-2 py-1 rounded-full">~195 kcal</span>
+      </div>
+      
+      <ul class="space-y-2 mb-3">
+        <li class="flex justify-between text-sm border-b border-line/50 pb-2">
+          <span class="text-muted">Pan integral</span>
+          <span class="font-medium">2 unidades (67 g) <span class="text-xs text-muted">(150 kcal)</span></span>
+        </li>
+        <li class="flex justify-between text-sm border-b border-line/50 pb-2">
+          <span class="text-muted">Queso crema</span>
+          <span class="font-medium">1 cda (15 g) <span class="text-xs text-muted">(36 kcal)</span></span>
+        </li>
+        <li class="flex justify-between text-sm">
+          <span class="text-muted">Mermelada de damasco</span>
+          <span class="font-medium">3 cdtas (15 g) <span class="text-xs text-muted">(9 kcal)</span></span>
+        </li>
+      </ul>
+
+      <div class="flex flex-wrap gap-2 mb-2">
+        <span class="inline-block text-xs font-medium bg-soft border border-line rounded-full px-3 py-1.5">Pan integral</span>
+        <span class="inline-block text-xs font-medium bg-soft border border-line rounded-full px-3 py-1.5">Queso crema</span>
+        <span class="inline-block text-xs font-medium bg-soft border border-line rounded-full px-3 py-1.5">Mermelada de damasco</span>
+      </div>
+      <p class="text-xs text-muted bg-amber-50 rounded-lg px-3 py-2 border border-amber-100">⏱️ Consumir 45–60 min antes de entrenar.</p>
     </div>
   </section>
 
@@ -159,13 +226,11 @@
 
 <script>
 /* =====================================================================
-   CONFIGURACIÓN DEL RETO  ← edita fechas aquí si lo extiendes
+   CONFIGURACIÓN DEL RETO
    ===================================================================== */
 const INICIO = '2026-06-01';
-const FIN    = '2026-07-08';   // día en que sales de vacaciones (incluido)
+const FIN    = '2026-07-08';
 
-/* Hábitos del día. Para agregar/quitar: edita este arreglo.
-   "key" debe ser único; "meta" cuenta para la racha y el calendario. */
 const HABITOS = [
   { key:'deporte',  emoji:'🏋️', label:'Deporte' },
   { key:'caminata', emoji:'🚶', label:'Caminata 30 min' },
@@ -173,7 +238,6 @@ const HABITOS = [
   { key:'comida',   emoji:'🥗', label:'Comí bien' },
 ];
 
-/* Escala de ánimo. Edita libremente los emojis/etiquetas. */
 const ANIMOS = [
   { v:1, emoji:'😞', label:'mal' },
   { v:2, emoji:'😕', label:'bajón' },
@@ -182,7 +246,6 @@ const ANIMOS = [
   { v:5, emoji:'😄', label:'genial' },
 ];
 
-/* Frases de ánimo (rotan al azar). Sin presión, solo buena onda. */
 const FRASES = [
   'Pequeños pasos, gran cambio.',
   'Lo constante le gana a lo perfecto.',
@@ -190,12 +253,10 @@ const FRASES = [
   'Estás más cerca que ayer.',
 ];
 
-/* Un día se considera "cumplido" si marcaste al menos 3 de los 4 hábitos.
-   Cámbialo aquí si quieres que sea más o menos exigente. */
 const META_CUMPLIDO = 3;
 
 /* =====================================================================
-   PERSISTENCIA — localStorage con respaldo en memoria
+   PERSISTENCIA
    ===================================================================== */
 const Store = {
   KEY:'mi_mes_v1', _mem:null,
@@ -215,7 +276,6 @@ function clamp(iso){ return iso<INICIO?INICIO : iso>FIN?FIN : iso; }
 function diffDias(a,b){ return Math.round((fromISO(b)-fromISO(a))/86400000); }
 function dentroDelReto(iso){ return iso>=INICIO && iso<=FIN; }
 
-// Día inicial: hoy si cae en el reto; si no, el inicio.
 let fechaActual = clamp(toISO(new Date()));
 
 function logDe(iso){ return state.logs[iso] || {}; }
@@ -225,13 +285,10 @@ function setLog(iso, patch){
   pulsoGuardado();
 }
 
-// Cuántos hábitos cumplió un día
 function nHabitos(iso){ const l=logDe(iso); return HABITOS.filter(h=>l[h.key]).length; }
 function diaCumplido(iso){ return nHabitos(iso) >= META_CUMPLIDO; }
 
-// Lunes de la semana de una fecha (para limitar la comida libre)
 function lunesDe(iso){ const d=fromISO(iso); const off=(d.getDay()+6)%7; d.setDate(d.getDate()-off); return toISO(d); }
-// ¿Ya se usó la comida libre esta semana? (devuelve la fecha usada o null)
 function libreUsadaEnSemana(iso){
   const lun = lunesDe(iso);
   for(let i=0;i<7;i++){ const dia=addDays(lun,i); if(logDe(dia).libre) return dia; }
@@ -243,7 +300,6 @@ function libreUsadaEnSemana(iso){
    ===================================================================== */
 function fmtDia(iso){ return fromISO(iso).toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'}); }
 
-// Construye los toggles de hábitos una sola vez
 function montarHabitos(){
   document.getElementById('habitos').innerHTML = HABITOS.map(h => `
     <button data-habit="${h.key}" class="tap rounded-2xl border border-line py-4 px-3 text-left">
@@ -263,7 +319,6 @@ function pintarHabito(btn,on){
   else  { btn.style.background='#fff';    btn.style.borderColor='#ececec'; btn.style.color='#14181a'; }
 }
 
-// Construye la escala de ánimo una sola vez
 function montarAnimo(){
   document.getElementById('animo').innerHTML = ANIMOS.map(a => `
     <button data-animo="${a.v}" class="tap flex-1 aspect-square rounded-xl border border-line grid place-items-center text-2xl" title="${a.label}">${a.emoji}</button>`).join('');
@@ -271,7 +326,7 @@ function montarAnimo(){
     btn.addEventListener('click', ()=>{
       const v=Number(btn.dataset.animo);
       const actual=logDe(fechaActual).animo;
-      setLog(fechaActual,{animo: actual===v ? null : v});  // volver a tocar lo deselecciona
+      setLog(fechaActual,{animo: actual===v ? null : v});
       pintarAnimo();
     });
   });
@@ -287,22 +342,18 @@ function pintarAnimo(){
 }
 
 function pintarMetricas(){
-  // Racha: días cumplidos consecutivos terminando hoy (o en el día visible si es <= hoy real)
   const tope = clamp(toISO(new Date()));
   let r=0, cursor=tope;
   while(dentroDelReto(cursor) && diaCumplido(cursor)){ r++; cursor=addDays(cursor,-1); }
   document.getElementById('racha').textContent = r;
 
-  // Días cumplidos en todo el reto
   const cumplidos = Object.keys(state.logs).filter(k=>dentroDelReto(k)&&diaCumplido(k)).length;
   document.getElementById('cumplidos').textContent = cumplidos;
 
-  // Porcentaje sobre los días transcurridos del reto
-  const totalReto = diffDias(INICIO,FIN)+1;            // 30 (+1 incluyendo el 1 de julio)
+  const totalReto = diffDias(INICIO,FIN)+1;
   const transcurridos = Math.min(totalReto, Math.max(1, diffDias(INICIO,tope)+1));
   document.getElementById('porcentaje').textContent = Math.round(cumplidos/transcurridos*100)+'%';
 
-  // Cuenta regresiva a vacaciones
   const faltan = Math.max(0, diffDias(tope,FIN));
   document.getElementById('countdown').textContent = faltan;
 }
@@ -327,9 +378,9 @@ function pintarLibre(){
 
 function pintarCalendario(){
   const cont=document.getElementById('calendario');
-  const tonos=['#eef0ef','#c9efd9','#8fdcb0','#44c285','#12a75e']; // 0..4 hábitos
+  const tonos=['#eef0ef','#c9efd9','#8fdcb0','#44c285','#12a75e'];
   const primero=fromISO(INICIO);
-  const offset=(primero.getDay()+6)%7;     // cuántas celdas vacías antes del día 1
+  const offset=(primero.getDay()+6)%7;
   const totalDias=diffDias(INICIO,FIN)+1;
   let html='';
   for(let i=0;i<offset;i++) html+='<span></span>';
@@ -385,22 +436,18 @@ function pintarGrafico(){
 
 function pintarTodo(){
   const log=logDe(fechaActual);
-  // Etiqueta de fecha
   document.getElementById('todayBtn').textContent =
     (fechaActual===clamp(toISO(new Date()))) ? 'Hoy' : fmtDia(fechaActual);
-  // Habilitar/limitar navegación al rango del reto
   document.getElementById('prevDay').disabled = fechaActual<=INICIO;
   document.getElementById('nextDay').disabled = fechaActual>=FIN;
   document.getElementById('prevDay').style.opacity = fechaActual<=INICIO?'.3':'1';
   document.getElementById('nextDay').style.opacity = fechaActual>=FIN?'.3':'1';
 
-  // Registro
   document.getElementById('peso').value = log.peso ?? '';
   document.getElementById('nota').value = log.nota ?? '';
   document.querySelectorAll('[data-habit]').forEach(b=>pintarHabito(b,!!log[b.dataset.habit]));
   pintarAnimo(); pintarLibre();
 
-  // Resto
   pintarMetricas(); pintarCalendario(); pintarGrafico();
 }
 
@@ -422,7 +469,6 @@ document.getElementById('peso').addEventListener('input',e=>{
 });
 document.getElementById('nota').addEventListener('input',e=>{ setLog(fechaActual,{nota:e.target.value}); });
 
-// Comida libre: solo una por semana
 document.getElementById('comidaLibre').onclick=()=>{
   const yaHoy=logDe(fechaActual).libre;
   if(yaHoy){ setLog(fechaActual,{libre:false}); pintarLibre(); pintarCalendario(); return; }
@@ -430,7 +476,7 @@ document.getElementById('comidaLibre').onclick=()=>{
   if(usadaEn){
     const btn=document.getElementById('comidaLibre');
     btn.classList.add('pop'); setTimeout(()=>btn.classList.remove('pop'),350);
-    return; // ya hay una esta semana
+    return;
   }
   setLog(fechaActual,{libre:true}); pintarLibre(); pintarCalendario();
 };
