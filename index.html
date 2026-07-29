@@ -3,113 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Sistema Isidora — Horario y Hábitos</title>
+<title>2026-2 — Horario y Hábitos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:      #ffffff;
-  --soft:    #f6f7f7;
-  --soft2:   #eef0ef;
-  --ink:     #14181a;
-  --muted:   #6f7680;
-  --faint:   #a6acb3;
-  --line:    #ececec;
-  --line2:   #e1e3e5;
+  /* -- surface -- */
+  --paper:   #f5f6f1;
+  --paper2:  #ecede6;
+  --card:    #ffffff;
+  --ink:     #1c2130;
+  --ink-soft:#3d4456;
+  --muted:   #767f8a;
+  --faint:   #a4abb2;
+  --line:    #e3e4dd;
+  --line2:   #d7d9d0;
 
-  --sage:     #12a75e;
-  --sage-lt:  #e9f7ef;
-  --sage-md:  #c6ecd7;
-  --sage-brd: #bfe6cf;
+  /* -- primary accents (más vivos) -- */
+  --copper:      #e57c1f;
+  --copper-dark: #b85a00;
+  --copper-lt:   #fff0dd;
+  --copper-brd:  #ffbf73;
 
-  --indigo:    #3b4fb0;
-  --indigo-lt: #eef0fb;
-  --indigo-brd:#c6cef0;
+  --indigo:      #4f63ff;
+  --indigo-dark: #3245d6;
+  --indigo-lt:   #eef1ff;
+  --indigo-brd:  #b9c5ff;
 
-  --amber:     #a86a08;
-  --amber-lt:  #fdf3e1;
-  --amber-brd: #f0d49a;
+  /* -- category / strata palette (más vibrante) -- */
+  --sport:       #00b894;
+  --sport-lt:    #ddfff7;
+  --sport-brd:   #71e7cf;
 
-  --slate:     #566875;
-  --slate-lt:  #eef2f5;
-  --slate-brd: #d3dde3;
+  --academic:    #2979ff;
+  --academic-lt: #e9f2ff;
+  --academic-brd:#8fbfff;
 
-  --teal:     #0d9488;
-  --teal-lt:  #e6f6f4;
-  --teal-md:  #c4eae6;
-  --teal-brd: #aee0da;
+  --strategy:    #9c4dff;
+  --strategy-lt: #f3e9ff;
+  --strategy-brd:#d0a8ff;
+
+  --workshop:    #7acb20;
+  --workshop-lt: #f1ffe2;
+  --workshop-brd:#b9ea74;
+
+  --rest:        #7b8794;
+  --rest-lt:     #f1f4f7;
+  --rest-brd:    #c6d0da;
+
+  --mind:        #ff8a1f;
+  --mind-lt:     #fff1df;
+  --mind-brd:    #ffc57c;
 
   --r:    18px;
   --r-sm: 12px;
   --pill: 999px;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
 html { font-size: 15px; -webkit-text-size-adjust: 100%; }
 body {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  background: var(--bg);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--paper2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--paper2) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: -1px -1px;
   color: var(--ink);
   line-height: 1.6;
   min-height: 100vh;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
 }
 h1, h2, h3 { font-family: 'Bricolage Grotesque', system-ui, sans-serif; }
+.mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+:focus-visible { outline: 2.5px solid var(--indigo); outline-offset: 2px; border-radius: 6px; }
 
 .page { max-width: 900px; margin: 0 auto; padding: 2.25rem 1.1rem 5rem; }
 @media (min-width: 640px){ .page { padding: 3rem 2rem 6rem; } }
 
-.header { margin-bottom: 2rem; }
+.header { margin-bottom: 1.6rem; animation: dropIn .55s cubic-bezier(.25,.8,.25,1) both; }
+@keyframes dropIn { from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:none;} }
+
 .header-badge {
   display: inline-flex; align-items: center; gap: 7px;
-  background: var(--sage-lt); border: 1px solid var(--sage-brd);
+  background: var(--indigo-lt); border: 1px solid var(--indigo-brd);
   border-radius: var(--pill); padding: 5px 14px;
-  font-size: 11px; font-weight: 600; color: var(--sage);
+  font-size: 11px; font-weight: 600; color: var(--indigo-dark);
   letter-spacing: 0.02em; margin-bottom: 1.1rem;
 }
-.header-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sage); }
+.header-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); animation: pulse 2.2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.45; transform:scale(1.4);} }
+
 h1 {
-  font-size: 38px; font-weight: 700; line-height: 1.05;
-  color: var(--ink); letter-spacing: -0.02em; margin-bottom: 0.6rem;
+  font-size: 42px; font-weight: 800; line-height: 1;
+  color: var(--ink); letter-spacing: -0.03em; margin-bottom: 0.55rem;
+  background: linear-gradient(100deg, var(--ink) 55%, var(--copper) 100%);
+  -webkit-background-clip: text; background-clip: text;
 }
-@media (max-width: 600px){ h1 { font-size: 30px; } }
-h1 em { font-style: normal; color: var(--sage); }
+h1 .accent-num { background: linear-gradient(100deg, var(--indigo) 15%, var(--copper) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@media (max-width: 600px){ h1 { font-size: 33px; } }
 .header p.sub { color: var(--muted); font-size: 13.5px; }
+
+/* legend strip — doubles as the category key used across the schedule */
+.legend-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; }
+.legend-chip { display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:600; color: var(--muted); }
+.legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 2rem; }
 .tab {
   padding: 9px 18px; font-size: 13.5px; font-family: inherit; font-weight: 600;
-  border: 1.5px solid var(--line); background: var(--bg); color: var(--muted);
-  border-radius: var(--pill); cursor: pointer; transition: all .15s; white-space: nowrap;
+  border: 1.5px solid var(--line); background: var(--card); color: var(--muted);
+  border-radius: var(--pill); cursor: pointer; transition: all .2s cubic-bezier(.4,0,.2,1); white-space: nowrap;
 }
-.tab.on { background: var(--ink); color: #fff; border-color: var(--ink); }
-.tab:hover:not(.on) { border-color: var(--ink); color: var(--ink); }
+.tab.on { background: var(--indigo); color: #fff; border-color: var(--indigo); box-shadow: 0 6px 16px rgba(58,74,134,0.28); transform: scale(1.03); }
+.tab:hover:not(.on) { border-color: var(--indigo); color: var(--indigo); transform: translateY(-1px); }
+.tab:active { transform: scale(0.96); }
 
 .panel { display: none; }
-.panel.on { display: block; animation: fade .35s ease both; }
-@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.panel.on { display: block; animation: fadeSlide .4s cubic-bezier(.25,.8,.25,1) both; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: none; } }
 
-.day-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.75rem; }
+.day-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
 .dbtn {
   padding: 7px 17px; font-size: 13px; font-family: inherit; font-weight: 600;
   border: 1.5px solid var(--line); border-radius: var(--pill);
-  background: var(--bg); color: var(--muted); cursor: pointer; transition: all .15s;
+  background: var(--card); color: var(--muted); cursor: pointer; transition: all .2s cubic-bezier(.4,0,.2,1);
 }
-.dbtn.on { background: var(--sage); color: #fff; border-color: var(--sage); }
-.dbtn:hover:not(.on) { border-color: var(--sage); color: var(--sage); }
+.dbtn.on { background: var(--indigo); color: #fff; border-color: var(--indigo); box-shadow: 0 6px 16px rgba(58,74,134,0.25); transform: scale(1.03); }
+.dbtn:hover:not(.on) { border-color: var(--indigo); color: var(--indigo); transform: translateY(-1px); }
+.dbtn:active { transform: scale(0.96); }
 
 .dcontent { display: none; }
-.dcontent.on { display: block; }
+.dcontent.on { display: block; animation: fadeSlide .35s ease both; }
 
 .stats-row { display: flex; gap: 10px; margin-bottom: 1.6rem; flex-wrap: wrap; }
 .stat-card {
-  background: var(--soft); border: 1px solid var(--line); border-radius: var(--r);
-  padding: 14px 20px; text-align: left; min-width: 150px; flex: 1;
+  border-radius: var(--r); padding: 14px 20px; text-align: left; min-width: 150px; flex: 1;
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+  animation: fadeSlide .5s ease both;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
 }
-.stat-card .num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 700; color: var(--sage); line-height: 1; }
+.stat-card:nth-child(2){ animation-delay: .08s; }
+.stat-card:hover { transform: translateY(-3px) scale(1.02); }
+.stat-card.copper { background: var(--copper-lt); border: 1px solid var(--copper-brd); }
+.stat-card.indigo { background: var(--indigo-lt); border: 1px solid var(--indigo-brd); }
+.stat-card .num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 30px; font-weight: 700; line-height: 1; transition: transform .3s cubic-bezier(.34,1.56,.64,1); display:inline-block; }
+.stat-card.copper .num { color: var(--copper-dark); }
+.stat-card.indigo .num { color: var(--indigo-dark); }
 .stat-card .label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.03em; margin-top: 4px; }
+.stat-card .num.bump { animation: bump .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes bump { 0%{transform:scale(1);} 40%{transform:scale(1.3) rotate(-4deg);} 100%{transform:scale(1);} }
+
+.ring-wrap { position:relative; width:52px; height:52px; flex-shrink:0; }
+.ring-wrap svg { transform: rotate(-90deg); }
+.ring-track { fill:none; stroke: var(--indigo-brd); stroke-width: 5; }
+.ring-fill  { fill:none; stroke: var(--indigo-dark); stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset .7s cubic-bezier(.25,.8,.25,1); }
 
 .slabel {
   font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint);
@@ -117,82 +174,127 @@ h1 em { font-style: normal; color: var(--sage); }
 }
 .slabel::after { content: ''; flex: 1; height: 1px; background: var(--line); }
 
-.steps { border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: #fff; margin-bottom: 1.5rem; }
+/* ---------- horario: stratigraphic timeline ---------- */
+.steps { border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: var(--card); margin-bottom: 1.5rem; box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
 .steps-header {
-  display: grid; grid-template-columns: 90px 1fr; background: var(--soft);
-  border-bottom: 1px solid var(--line); padding: 9px 16px; gap: 12px;
+  display: grid; grid-template-columns: 32px 76px 1fr; background: var(--paper2);
+  border-bottom: 1px solid var(--line); padding: 9px 16px; gap: 12px; align-items:center;
 }
 .col-label { font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+.timeline { position: relative; padding: 4px 0; }
+.timeline::before {
+  content: ''; position: absolute; left: 32px; top: 6px; bottom: 6px; width: 2px;
+  background: repeating-linear-gradient(var(--line2), var(--line2) 4px, transparent 4px, transparent 8px);
+}
 .step {
-  display: grid; grid-template-columns: 90px 1fr; align-items: start;
-  padding: 13px 16px; border-bottom: 1px solid var(--line); gap: 12px; transition: background .12s;
+  position: relative;
+  display: grid; grid-template-columns: 32px 76px 1fr; align-items: start;
+  padding: 13px 16px; border-bottom: 1px solid var(--line); gap: 12px; transition: background .18s;
+  animation: stepIn .4s cubic-bezier(.25,.8,.25,1) both;
 }
 .step:last-child { border-bottom: none; }
-.step:hover { background: var(--soft); }
-.step-time { font-size: 12.5px; font-weight: 700; color: var(--sage); padding-top: 1px; }
-.step-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-.tag { display:inline-block; padding: 2px 10px; border-radius: var(--pill); font-size: 10px; font-weight: 600; border: 1px solid; }
-.tag-sage   { background: var(--sage-lt);   color: var(--sage);   border-color: var(--sage-brd); }
-.tag-indigo { background: var(--indigo-lt); color: var(--indigo); border-color: var(--indigo-brd); }
-.tag-amber  { background: var(--amber-lt);  color: var(--amber);  border-color: var(--amber-brd); }
-.tag-slate  { background: var(--slate-lt);  color: var(--slate);  border-color: var(--slate-brd); }
-.tag-teal   { background: var(--teal-lt);   color: var(--teal);   border-color: var(--teal-brd); }
-
-.callout {
-  background: var(--soft); border: 1px solid var(--line); border-radius: var(--r);
-  padding: 14px 16px; font-size: 12.5px; color: var(--muted); line-height: 1.65; margin-top: 10px;
-}
-.callout b { color: var(--ink); font-weight: 700; }
-.callout-amber { background: var(--amber-lt); border-color: var(--amber-brd); color: #7a5006; }
-.callout-amber b { color: var(--amber); }
+.step:hover { background: var(--paper); }
+@keyframes stepIn { from{ opacity:0; transform:translateX(-10px);} to{ opacity:1; transform:none; } }
+.step-rail { position: relative; display:flex; justify-content:center; padding-top: 3px; }
+.step-dot { width: 13px; height: 13px; border-radius: 50%; background: var(--cat-hex, var(--rest)); border: 3px solid var(--card); box-shadow: 0 0 0 1.5px var(--cat-brd, var(--rest-brd)); z-index: 2; transition: transform .2s cubic-bezier(.34,1.56,.64,1); }
+.step:hover .step-dot { transform: scale(1.25); }
+.step-time { font-size: 11.5px; font-weight: 600; color: var(--ink-soft); padding-top: 4px; }
+.step-body { min-width: 0; }
+.step-top { display:flex; align-items:center; flex-wrap:wrap; gap: 8px; margin-bottom: 6px; }
+.step-name { font-size: 14px; font-weight: 700; color: var(--ink); }
+.cat-tag { font-size: 9.5px; font-weight: 700; padding: 2px 9px; border-radius: var(--pill); border: 1px solid; letter-spacing: 0.03em; }
 
 .habit-card {
   border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px;
-  margin-bottom: 10px; background: #fff;
+  margin-bottom: 10px; background: var(--card); transition: all .25s cubic-bezier(.4,0,.2,1);
+  animation: fadeSlide .4s cubic-bezier(.25,.8,.25,1) both;
 }
+.habit-card:hover { box-shadow: 0 4px 16px rgba(28,33,48,0.07); transform: translateY(-1px); }
 .habit-card.optional { opacity: 0.55; }
+.habit-card.pop { animation: cardPop .45s cubic-bezier(.34,1.56,.64,1); }
+@keyframes cardPop { 0%{transform:scale(1);} 35%{transform:scale(1.02); border-color:var(--indigo); background:var(--indigo-lt);} 100%{transform:scale(1);} }
 .habit-card .htitle { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.tag { display:inline-block; padding: 2px 10px; border-radius: var(--pill); font-size: 10px; font-weight: 600; border: 1px solid; }
+.tag-slate  { background: var(--rest-lt);  color: var(--rest);  border-color: var(--rest-brd); }
+
 .chip-options { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 7px 14px; border-radius: var(--pill); border: 1.5px solid var(--line);
-  font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .12s;
-  background: #fff; user-select:none;
+  font-size: 12.5px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all .18s cubic-bezier(.4,0,.2,1);
+  background: var(--card); user-select:none;
 }
-.chip.on { background: var(--sage); color: #fff; border-color: var(--sage); }
-.chip:hover:not(.on) { border-color: var(--sage); color: var(--sage); }
+.chip.on { background: var(--copper); color: #fff; border-color: var(--copper); transform: scale(1.05); box-shadow: 0 3px 10px rgba(189,113,48,0.3); }
+.chip:hover:not(.on) { border-color: var(--copper); color: var(--copper-dark); transform: translateY(-1px); }
+.chip:active { transform: scale(0.92); }
+
 .simple-toggle { display: flex; align-items: center; gap: 12px; cursor: pointer; flex-wrap:wrap; }
 .switch { position: relative; width: 42px; height: 24px; flex-shrink:0; }
 .switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; inset: 0; background: var(--line2); border-radius: var(--pill); transition: .2s; }
+.slider { position: absolute; inset: 0; background: var(--line2); border-radius: var(--pill); transition: .25s; }
 .slider::before {
   content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px;
-  background: #fff; border-radius: 50%; transition: .2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  background: #fff; border-radius: 50%; transition: .25s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
-input:checked + .slider { background: var(--sage); }
+input:checked + .slider { background: var(--copper); }
 input:checked + .slider::before { transform: translateX(18px); }
 
 .week-strip { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin-top: 1.5rem; }
-.wcell { text-align: center; }
+.wcell { text-align: center; animation: fadeSlide .4s cubic-bezier(.25,.8,.25,1) both; }
 .wcell .wd { font-size: 10.5px; color: var(--faint); font-weight: 700; margin-bottom: 4px; }
 .wcell .wdate { font-size: 9.5px; color: var(--faint); margin-bottom: 6px; }
 .wdot {
   width: 28px; height: 28px; border-radius: 50%; margin: 0 auto;
-  background: var(--soft2); border: 1px solid var(--line);
+  background: var(--paper2); border: 1px solid var(--line);
   display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--faint); font-weight: 700;
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
 }
-.wdot.done { background: var(--sage); color: #fff; border-color: var(--sage); }
-.wdot.today { border: 2px solid var(--ink); }
+.wdot.done { background: var(--copper); color: #fff; border-color: var(--copper); box-shadow: 0 3px 10px rgba(189,113,48,0.3); }
+.wdot.today { border: 2px solid var(--indigo); }
 
-.status { font-size: 11.5px; color: var(--sage); min-height: 16px; margin-top: 8px; font-weight: 600; }
+.stat-card.neutral { background: var(--paper2); border: 1px solid var(--line2); }
+.stat-card.neutral .num { color: var(--ink); }
+
+.semester-note { font-size: 12.5px; color: var(--muted); background: var(--paper2); border: 1px solid var(--line2); border-radius: var(--r-sm); padding: 12px 14px; margin-bottom: 1.4rem; }
+
+.habit-bar-row { margin-bottom: 14px; }
+.habit-bar-top { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:6px; gap:8px; }
+.habit-bar-name { font-size: 13px; font-weight: 600; color: var(--ink); }
+.habit-bar-pct { font-size: 12px; font-weight: 700; color: var(--indigo-dark); }
+.hbar-track { height: 8px; border-radius: var(--pill); background: var(--paper2); overflow: hidden; }
+.hbar-fill { height: 100%; border-radius: var(--pill); background: var(--indigo); width: 0%; animation: growHbar .7s cubic-bezier(.25,.8,.25,1) both; }
+@keyframes growHbar { from { width: 0% !important; } }
+
+.heatmap-wrap { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 4px; }
+.heatmap-month { display: flex; flex-direction: column; gap: 6px; }
+.heatmap-month-label { font-size: 10.5px; font-weight: 700; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+.heatmap-grid { display: grid; grid-template-columns: repeat(7, 13px); grid-auto-rows: 13px; gap: 3px; }
+.heat-cell { width: 13px; height: 13px; border-radius: 3px; background: var(--copper); animation: fadeSlide .3s ease both; }
+.heat-cell.future { background: transparent; border: 1.5px dashed var(--line2); }
+.heat-cell.is-today { box-shadow: 0 0 0 2px var(--indigo); }
+.heat-blank { width: 13px; height: 13px; }
+.heat-legend { display:flex; align-items:center; gap:6px; margin-top: 14px; font-size: 10.5px; color: var(--faint); font-weight: 600; }
+.heat-legend .heat-cell { animation:none; }
+
+.status-row { display:flex; align-items:center; gap:8px; margin-top: 8px; min-height:18px; }
+.status { font-size: 11.5px; color: var(--indigo-dark); font-weight: 600; }
+.saved-time { font-size: 10.5px; color: var(--faint); }
+.loading-state { font-size: 12.5px; color: var(--faint); padding: 20px 4px; }
+
+.confetti-piece {
+  position: fixed; top: -10px; width: 8px; height: 8px; z-index: 9999; pointer-events: none;
+  border-radius: 2px;
+}
+
+.btn-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:1.4rem; }
 </style>
 </head>
 <body>
 <div class="page">
 
   <div class="header">
-    <div class="header-badge"><div class="header-badge-dot"></div>Julio — Diciembre 2026 · Santiago, Chile</div>
-    <h1>Sistema <em>Isidora</em></h1>
+    <div class="header-badge"><div class="header-badge-dot"></div>Segundo semestre 2026 · Santiago, Chile</div>
+    <h1><span class="accent-num">2026</span>-2</h1>
     <p class="sub">Horario y hábitos diarios</p>
   </div>
 
@@ -212,15 +314,34 @@ function todayStr(d){
 function dateFromStr(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
 function weekdayOf(s){ return dateFromStr(s).getDay(); }
 
+/* ---------- persistence (window.storage — works inside the Claude artifact runtime) ---------- */
 const STORAGE_KEY = 'isidora-sistema-2026';
-function loadData(){
-  try{ const raw = localStorage.getItem(STORAGE_KEY); if(raw) return JSON.parse(raw); }catch(e){}
-  return { habitos: {} };
+async function loadData(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, false);
+    if(res && res.value) return JSON.parse(res.value);
+  }catch(e){ /* no guardado aún, o storage no disponible */ }
+  return { habitos: {}, lastSaved: null };
 }
-let data = loadData();
-function saveData(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }catch(e){} }
+async function saveData(){
+  try{
+    data.lastSaved = new Date().toISOString();
+    const ok = await window.storage.set(STORAGE_KEY, JSON.stringify(data), false);
+    return !!ok;
+  }catch(e){
+    console.error('Error guardando datos:', e);
+    return false;
+  }
+}
+function getLastSaved(){
+  if(!data.lastSaved) return null;
+  const d = new Date(data.lastSaved);
+  return isNaN(d) ? null : d;
+}
 
-const TABS = [ {id:'habitos', label:'Hábitos'}, {id:'horario', label:'Horario'} ];
+let data = { habitos: {}, lastSaved: null };
+
+const TABS = [ {id:'habitos', label:'Hábitos'}, {id:'horario', label:'Horario'}, {id:'progreso', label:'Progreso'} ];
 
 function renderTabs(){
   const nav = document.getElementById('tabs');
@@ -235,12 +356,32 @@ function renderTabs(){
 }
 function switchTab(id){
   document.querySelectorAll('.tab').forEach((b,i)=> b.classList.toggle('on', TABS[i].id===id));
-  document.querySelectorAll('.panel').forEach(p=> p.classList.toggle('on', p.id==='panel-'+id));
+  document.querySelectorAll('.panel').forEach(p=> {
+    p.classList.remove('on');
+    if(p.id==='panel-'+id){ void p.offsetWidth; p.classList.add('on'); }
+  });
 }
-function renderPanels(){
-  document.getElementById('panels').innerHTML = TABS.map(t=>`<div class="panel${t.id==='habitos'?' on':''}" id="panel-${t.id}"></div>`).join('');
-  renderHabitos();
-  renderHorario();
+
+const CONFETTI_COLORS = ['#bd7130','#3a4a86','#2f8f76','#7d5f82','#74883f','#3d5a80'];
+function fireConfetti(){
+  for(let i=0;i<48;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    const startX = Math.random()*window.innerWidth;
+    el.style.left = startX+'px';
+    el.style.background = CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)];
+    el.style.opacity = 1;
+    el.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);
+    const fallDist = window.innerHeight + 40;
+    const drift = (Math.random()-0.5)*220;
+    const duration = 1300 + Math.random()*1000;
+    el.animate([
+      { transform: `translate(0,0) rotate(0deg)`, opacity:1 },
+      { transform: `translate(${drift}px, ${fallDist}px) rotate(${360+Math.random()*360}deg)`, opacity:0.9 }
+    ], { duration, easing:'cubic-bezier(.2,.6,.4,1)' });
+    setTimeout(()=> el.remove(), duration+50);
+  }
 }
 
 const DEPORTE_OPTIONS = ['Prep. Física','Halterofilia','Nike Run Club','Caminar','Padel','Cerro','Otro'];
@@ -298,6 +439,17 @@ function computeWeekPercentage(){
 
 let currentDate = todayStr();
 
+function ringSvg(pct){
+  const r = 20, c = 2*Math.PI*r;
+  const offset = c * (1 - pct/100);
+  return `<div class="ring-wrap">
+    <svg width="52" height="52" viewBox="0 0 52 52">
+      <circle class="ring-track" cx="26" cy="26" r="${r}"></circle>
+      <circle class="ring-fill" cx="26" cy="26" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${offset}"></circle>
+    </svg>
+  </div>`;
+}
+
 function renderHabitos(){
   const p = document.getElementById('panel-habitos');
   const wd = weekdayOf(currentDate);
@@ -305,29 +457,37 @@ function renderHabitos(){
   const streak = computeStreak();
   const pct = computeWeekPercentage();
   const dayLabel = dateFromStr(currentDate).toLocaleDateString('es-CL',{weekday:'long', day:'numeric', month:'long'});
+  const wasComplete = dayFullyCompleted(currentDate);
+  const lastSaved = getLastSaved();
+  const savedTxt = lastSaved ? ('Último guardado: '+lastSaved.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})) : 'Aún no hay datos guardados';
 
   p.innerHTML = `
     <div class="stats-row">
-      <div class="stat-card"><div class="num">🔥 ${streak}</div><div class="label">RACHA DE DÍAS</div></div>
-      <div class="stat-card"><div class="num">${pct}%</div><div class="label">CUMPLIMIENTO ESTA SEMANA</div></div>
+      <div class="stat-card copper"><div><div class="num" id="streak-num">🔥 ${streak}</div><div class="label">RACHA DE DÍAS</div></div></div>
+      <div class="stat-card indigo"><div><div class="num" id="pct-num">${pct}%</div><div class="label">CUMPLIMIENTO ESTA SEMANA</div></div>${ringSvg(pct)}</div>
     </div>
     <div class="slabel">${dayLabel}</div>
     <div id="habit-list"></div>
-    <div class="status" id="habit-status"></div>
+    <div class="status-row">
+      <div class="status" id="habit-status"></div>
+      <div class="saved-time" id="saved-time">${savedTxt}</div>
+    </div>
     <div class="slabel" style="margin-top:1.6rem">Últimos 7 días</div>
     <div class="week-strip" id="week-strip"></div>
-    <div style="margin-top:1.4rem;">
+    <div class="btn-row">
       <button class="dbtn" id="prev-day">← Día anterior</button>
-      <button class="dbtn" id="next-day" style="margin-left:6px;">Día siguiente →</button>
-      <button class="dbtn" id="today-day" style="margin-left:6px;">Hoy</button>
+      <button class="dbtn" id="next-day">Día siguiente →</button>
+      <button class="dbtn" id="today-day">Hoy</button>
     </div>
   `;
 
   const list = document.getElementById('habit-list');
-  HABITOS_DEF.forEach(h=>{
+  HABITOS_DEF.forEach((h,idx)=>{
     const obligatorio = isObligatorio(h, wd);
     const card = document.createElement('div');
     card.className = 'habit-card' + (obligatorio?'':' optional');
+    card.style.animationDelay = (idx*0.05)+'s';
+    card.dataset.hid = h.id;
     if(h.type==='multi'){
       const selected = entry[h.id] || [];
       card.innerHTML = `<div class="htitle">${h.label} ${obligatorio?'':'<span class="tag tag-slate">Opcional hoy</span>'}</div>
@@ -342,6 +502,19 @@ function renderHabitos(){
     list.appendChild(card);
   });
 
+  async function afterToggle(cardEl){
+    cardEl.classList.remove('pop'); void cardEl.offsetWidth; cardEl.classList.add('pop');
+    const ok = await saveData();
+    if(ok){ flash('habit-status', '✓ Guardado'); }
+    else { flash('habit-status', '⚠ No se pudo guardar — intenta de nuevo'); }
+    const nowComplete = dayFullyCompleted(currentDate);
+    if(nowComplete && !wasComplete && currentDate===todayStr()){
+      fireConfetti();
+    }
+    renderHabitos();
+    renderProgreso();
+  }
+
   list.querySelectorAll('.chip').forEach(chip=>{
     chip.addEventListener('click', ()=>{
       if(!data.habitos[currentDate]) data.habitos[currentDate] = {};
@@ -350,14 +523,14 @@ function renderHabitos(){
       if(arr.includes(opt)) arr = arr.filter(o=>o!==opt);
       else arr.push(opt);
       data.habitos[currentDate][hid] = arr;
-      saveData(); flash('habit-status'); renderHabitos();
+      afterToggle(chip.closest('.habit-card'));
     });
   });
   list.querySelectorAll('input[type=checkbox]').forEach(cb=>{
     cb.addEventListener('change', ()=>{
       if(!data.habitos[currentDate]) data.habitos[currentDate] = {};
       data.habitos[currentDate][cb.dataset.h] = cb.checked;
-      saveData(); flash('habit-status'); renderHabitos();
+      afterToggle(cb.closest('.habit-card'));
     });
   });
 
@@ -383,101 +556,299 @@ function renderHabitos(){
     const isToday = ds===todayStr();
     const cell = document.createElement('div');
     cell.className='wcell';
+    cell.style.animationDelay = ((6-i)*0.04)+'s';
     cell.innerHTML = `<div class="wd">${dayLetters[wdi]}</div><div class="wdate">${d.getDate()}</div><div class="wdot ${done?'done':''} ${isToday?'today':''}">${done===null?'–':(done?'✓':'')}</div>`;
     ws.appendChild(cell);
   }
 }
-function flash(id){
+function flash(id, msg){
   const el = document.getElementById(id);
   if(!el) return;
-  el.textContent = '✓ Guardado';
-  setTimeout(()=>{ if(el.textContent==='✓ Guardado') el.textContent=''; }, 1400);
+  el.textContent = msg;
+  setTimeout(()=>{ if(el.textContent===msg) el.textContent=''; }, 1600);
 }
+
+/* ---------- horario data + category system ---------- */
+const ACTIVITY_CATEGORY = {
+  'Mindfulness': 'mind',
+  'Mindfulness (opcional)': 'mind',
+  'Preparación Física': 'sport',
+  'Manejo de Riesgo en Proyectos': 'academic',
+  'Halterofilia': 'sport',
+  'Gestión Estratégica de Empresas Mineras': 'strategy',
+  'Almuerzo': 'rest',
+  'Taller de Ing. Industrial en Construcción': 'workshop',
+  'Taller de Ing. Ind. en Construcción *': 'workshop',
+  'Nike Run Club': 'sport',
+  'Evaluación de Proyectos': 'academic',
+  'Caminar / Padel / Cerro / Nike Run Club / Otro': 'sport',
+  'Sin exigencia de deporte': 'rest',
+};
+const CATEGORY_META = {
+  sport:    {css:'sport',    label:'Deporte'},
+  academic: {css:'academic', label:'Ramo'},
+  strategy: {css:'strategy', label:'Ramo'},
+  workshop: {css:'workshop', label:'Taller'},
+  rest:     {css:'rest',     label:'Descanso'},
+  mind:     {css:'mind',     label:'Hábito'},
+};
+const CAT_VARS = {
+  sport:    ['--sport','--sport-brd'],
+  academic: ['--academic','--academic-brd'],
+  strategy: ['--strategy','--strategy-brd'],
+  workshop: ['--workshop','--workshop-brd'],
+  rest:     ['--rest','--rest-brd'],
+  mind:     ['--mind','--mind-brd'],
+};
+const LEGEND_ORDER = ['sport','academic','strategy','workshop','mind','rest'];
+const LEGEND_LABEL = { sport:'Deporte', academic:'Ramo', strategy:'Estrategia', workshop:'Taller', mind:'Hábito', rest:'Descanso' };
 
 const HORARIO = {
   lun: {label:'Lunes', items:[
-    {t:'8:00–8:10', n:'Mindfulness', tag:'sage'},
-    {t:'8:20–9:30', n:'Preparación Física', tag:'sage'},
-    {t:'9:40–10:50', n:'Manejo de Riesgo en Proyectos', tag:'indigo'},
-    {t:'11:00–12:10', n:'Halterofilia', tag:'sage'},
-    {t:'12:20–13:30', n:'Gestión Estratégica de Empresas Mineras', tag:'indigo'},
-    {t:'13:30–14:50', n:'Almuerzo', tag:'slate'},
-    {t:'14:50–16:10', n:'Taller de Ing. Industrial en Construcción', tag:'indigo'},
+    {t:'8:00–8:10', n:'Mindfulness'},
+    {t:'8:20–9:30', n:'Preparación Física'},
+    {t:'9:40–10:50', n:'Manejo de Riesgo en Proyectos'},
+    {t:'11:00–12:10', n:'Halterofilia'},
+    {t:'12:20–13:30', n:'Gestión Estratégica de Empresas Mineras'},
+    {t:'13:30–14:50', n:'Almuerzo'},
+    {t:'14:50–16:10', n:'Taller de Ing. Industrial en Construcción'},
   ]},
   mar: {label:'Martes', items:[
-    {t:'8:00–8:10', n:'Mindfulness (opcional)', tag:'slate'},
-    {t:'Libre', n:'Nike Run Club', tag:'teal'},
+    {t:'Libre', n:'Nike Run Club'},
+    {t:'8:00–8:10', n:'Mindfulness (opcional)'},
   ]},
   mie: {label:'Miércoles', items:[
-    {t:'8:00–8:10', n:'Mindfulness', tag:'sage'},
-    {t:'8:20–9:30', n:'Preparación Física', tag:'sage'},
-    {t:'9:40–10:50', n:'Manejo de Riesgo en Proyectos', tag:'indigo'},
-    {t:'11:00–12:10', n:'Halterofilia', tag:'sage'},
-    {t:'12:20–13:30', n:'Gestión Estratégica de Empresas Mineras', tag:'indigo'},
+    {t:'8:00–8:10', n:'Mindfulness'},
+    {t:'8:20–9:30', n:'Preparación Física'},
+    {t:'9:40–10:50', n:'Manejo de Riesgo en Proyectos'},
+    {t:'11:00–12:10', n:'Halterofilia'},
+    {t:'12:20–13:30', n:'Gestión Estratégica de Empresas Mineras'},
   ]},
   jue: {label:'Jueves', items:[
-    {t:'8:00–8:10', n:'Mindfulness (opcional)', tag:'slate'},
-    {t:'Libre', n:'Nike Run Club', tag:'teal'},
+    {t:'Libre', n:'Nike Run Club'},
+    {t:'8:00–8:10', n:'Mindfulness (opcional)'},
   ]},
   vie: {label:'Viernes', items:[
-    {t:'8:00–8:10', n:'Mindfulness', tag:'sage'},
-    {t:'8:20–9:30', n:'Preparación Física', tag:'sage'},
-    {t:'9:40–10:50', n:'Taller de Ing. Ind. en Construcción *', tag:'amber'},
-    {t:'11:00–12:10', n:'Halterofilia', tag:'sage'},
-    {t:'13:30–14:50', n:'Almuerzo', tag:'slate'},
-    {t:'14:50–18:40', n:'Evaluación de Proyectos', tag:'indigo'},
+    {t:'8:00–8:10', n:'Mindfulness'},
+    {t:'8:20–9:30', n:'Preparación Física'},
+    {t:'9:40–10:50', n:'Taller de Ing. Ind. en Construcción *'},
+    {t:'11:00–12:10', n:'Halterofilia'},
+    {t:'13:30–14:50', n:'Almuerzo'},
+    {t:'14:50–18:40', n:'Evaluación de Proyectos'},
   ]},
   sab: {label:'Sábado', items:[
-    {t:'Opcional', n:'Mindfulness', tag:'slate'},
-    {t:'Libre', n:'Caminar / Padel / Cerro / Nike Run Club / Otro', tag:'teal'},
+    {t:'Libre', n:'Caminar / Padel / Cerro / Nike Run Club / Otro'},
+    {t:'Opcional', n:'Mindfulness'},
   ]},
   dom: {label:'Domingo', items:[
-    {t:'Opcional', n:'Mindfulness', tag:'slate'},
-    {t:'Descanso', n:'Sin exigencia de deporte', tag:'slate'},
+    {t:'Descanso', n:'Sin exigencia de deporte'},
+    {t:'Opcional', n:'Mindfulness'},
   ]},
 };
 const HORARIO_ORDER = ['lun','mar','mie','jue','vie','sab','dom'];
 
+function todayHorarioKey(){
+  const idx = (new Date().getDay() + 6) % 7; // Monday -> 0 ... Sunday -> 6
+  return HORARIO_ORDER[idx];
+}
+
 function renderHorario(){
   const p = document.getElementById('panel-horario');
   p.innerHTML = `
-    <div class="day-nav" id="horario-daynav"></div>
+    <div class="legend-strip" id="cat-legend"></div>
+    <div class="day-nav" id="horario-daynav" style="margin-top:1.4rem"></div>
     <div id="horario-content"></div>
-    <div class="callout callout-amber" style="margin-top:6px;">
-      <b>Nota:</b> el Taller de Ing. Industrial en Construcción del viernes tiene un tope de horario temporal — pendiente de ajustar en unas semanas.
-    </div>
   `;
+  const legend = document.getElementById('cat-legend');
+  legend.innerHTML = LEGEND_ORDER.map(cat=>{
+    return `<span class="legend-chip"><span class="legend-dot" style="background:var(--${cat})"></span>${LEGEND_LABEL[cat]}</span>`;
+  }).join('');
+
+  const todayKey = todayHorarioKey();
   const nav = document.getElementById('horario-daynav');
-  HORARIO_ORDER.forEach((key,i)=>{
+  let todayBtn = null;
+  HORARIO_ORDER.forEach((key)=>{
     const b = document.createElement('button');
-    b.className='dbtn'+(i===0?' on':'');
+    b.className='dbtn'+(key===todayKey?' on':'');
     b.textContent = HORARIO[key].label.slice(0,3);
     b.onclick = ()=> showHorarioDay(key, b);
+    if(key===todayKey) todayBtn = b;
     nav.appendChild(b);
   });
-  showHorarioDay('lun', nav.children[0]);
+  showHorarioDay(todayKey, todayBtn);
 }
 function showHorarioDay(key, btn){
   document.querySelectorAll('#horario-daynav .dbtn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   const day = HORARIO[key];
   const content = document.getElementById('horario-content');
+  content.classList.remove('dcontent'); void content.offsetWidth;
+
   content.innerHTML = `
     <div class="slabel">${day.label}</div>
     <div class="steps">
-      <div class="steps-header"><div class="col-label">Hora</div><div class="col-label">Actividad</div></div>
-      ${day.items.map(it=>`
-        <div class="step">
-          <div class="step-time">${it.t}</div>
-          <div><div class="step-name">${it.n}</div></div>
+      <div class="steps-header"><div class="col-label"></div><div class="col-label">Hora</div><div class="col-label">Actividad</div></div>
+      <div class="timeline">
+      ${day.items.map((it,idx)=>{
+        const cat = ACTIVITY_CATEGORY[it.n] || 'rest';
+        const [hexVar, brdVar] = CAT_VARS[cat];
+        const meta = CATEGORY_META[cat];
+        return `
+        <div class="step" style="--cat-hex:var(${hexVar}); --cat-brd:var(${brdVar}); animation-delay:${idx*0.05}s;">
+          <div class="step-rail"><span class="step-dot"></span></div>
+          <div class="step-time mono">${it.t}</div>
+          <div class="step-body">
+            <div class="step-top">
+              <span class="step-name">${it.n}</span>
+              <span class="cat-tag" style="background:var(${hexVar}); color:#fff; border-color:var(${brdVar});">${meta.label}</span>
+            </div>
+          </div>
         </div>
-      `).join('')}
+      `;}).join('')}
+      </div>
     </div>
   `;
+  content.classList.add('dcontent','on');
 }
 
-renderTabs();
-renderPanels();
+/* ---------- progreso: semestre completo ---------- */
+const SEMESTER_START = '2026-08-05';
+const SEMESTER_END = '2026-12-05';
+const MONTH_NAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function computeSemesterStats(){
+  const start = dateFromStr(SEMESTER_START);
+  const end = dateFromStr(SEMESTER_END);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const totalDays = Math.round((end - start) / 86400000) + 1;
+  let daysElapsed;
+  if(today < start) daysElapsed = 0;
+  else if(today > end) daysElapsed = totalDays;
+  else daysElapsed = Math.round((today - start) / 86400000) + 1;
+  const daysRemaining = Math.max(totalDays - daysElapsed, 0);
+
+  const perHabit = {};
+  HABITOS_DEF.forEach(h => perHabit[h.id] = { req: 0, done: 0, label: h.label });
+
+  let reqSlots = 0, doneSlots = 0, runningStreak = 0, bestStreak = 0;
+  const heatmap = [];
+
+  let d = new Date(start);
+  while(d <= end){
+    const ds = todayStr(d);
+    const wd = d.getDay();
+    const isFuture = d > today;
+    let dayReq = 0, dayDone = 0;
+    HABITOS_DEF.forEach(h => {
+      if(isObligatorio(h, wd)){
+        if(!isFuture){
+          dayReq++;
+          perHabit[h.id].req++;
+          if(habitCompleted(data.habitos[ds], h)){ dayDone++; perHabit[h.id].done++; }
+        }
+      }
+    });
+    if(!isFuture){
+      reqSlots += dayReq; doneSlots += dayDone;
+      const fully = dayReq > 0 && dayDone === dayReq;
+      if(fully){ runningStreak++; bestStreak = Math.max(bestStreak, runningStreak); }
+      else { runningStreak = 0; }
+    }
+    const ratio = (!isFuture && dayReq > 0) ? dayDone / dayReq : null;
+    heatmap.push({ ds, wd, ratio, isFuture, isToday: ds === todayStr() });
+    d.setDate(d.getDate() + 1);
+  }
+  const pct = reqSlots ? Math.round((doneSlots / reqSlots) * 100) : 0;
+  return { totalDays, daysElapsed, daysRemaining, pct, bestStreak, perHabit, heatmap, started: today >= start };
+}
+
+function renderHeatmap(heatmap){
+  const months = [];
+  let curMonthKey = null, curMonthArr = null;
+  heatmap.forEach(day => {
+    const monthKey = day.ds.slice(0,7);
+    if(monthKey !== curMonthKey){
+      curMonthKey = monthKey;
+      curMonthArr = [];
+      months.push({ key: monthKey, days: curMonthArr });
+    }
+    curMonthArr.push(day);
+  });
+
+  return `<div class="heatmap-wrap">
+    ${months.map(month => {
+      const monthNum = +month.key.slice(5,7) - 1;
+      const leading = month.days[0].wd === 0 ? 6 : month.days[0].wd - 1; // Monday-start offset
+      const blanks = Array.from({length: leading}, () => '<div class="heat-blank"></div>').join('');
+      const cells = month.days.map((day, idx) => {
+        if(day.isFuture){
+          return `<div class="heat-cell future" style="animation-delay:${idx*0.01}s" title="${day.ds}"></div>`;
+        }
+        const opacity = day.ratio === null ? 0.12 : (0.12 + day.ratio*0.88).toFixed(2);
+        return `<div class="heat-cell${day.isToday?' is-today':''}" style="opacity:${opacity}; animation-delay:${idx*0.01}s" title="${day.ds} — ${Math.round((day.ratio||0)*100)}%"></div>`;
+      }).join('');
+      return `<div class="heatmap-month">
+        <div class="heatmap-month-label">${MONTH_NAMES[monthNum]}</div>
+        <div class="heatmap-grid">${blanks}${cells}</div>
+      </div>`;
+    }).join('')}
+  </div>
+  <div class="heat-legend">
+    <span>Menos</span>
+    <div class="heat-cell" style="opacity:0.12"></div>
+    <div class="heat-cell" style="opacity:0.35"></div>
+    <div class="heat-cell" style="opacity:0.6"></div>
+    <div class="heat-cell" style="opacity:1"></div>
+    <span>Más</span>
+  </div>`;
+}
+
+function renderProgreso(){
+  const p = document.getElementById('panel-progreso');
+  const s = computeSemesterStats();
+  const currentStreak = computeStreak();
+
+  const noteHtml = !s.started
+    ? `<div class="semester-note">El semestre aún no comienza — arranca el miércoles 5 de agosto de 2026.</div>`
+    : (s.daysRemaining === 0 ? `<div class="semester-note">¡Llegaste al final del semestre! (5 de diciembre de 2026)</div>` : '');
+
+  p.innerHTML = `
+    ${noteHtml}
+    <div class="stats-row">
+      <div class="stat-card neutral"><div><div class="num">${s.daysElapsed}<span style="font-size:16px; color:var(--faint);"> / ${s.totalDays}</span></div><div class="label">DÍAS DEL SEMESTRE</div></div></div>
+      <div class="stat-card copper"><div><div class="num">🔥 ${currentStreak}</div><div class="label">RACHA ACTUAL</div></div></div>
+      <div class="stat-card copper"><div><div class="num">🏆 ${s.bestStreak}</div><div class="label">MEJOR RACHA DEL SEMESTRE</div></div></div>
+      <div class="stat-card indigo"><div><div class="num">${s.pct}%</div><div class="label">CUMPLIMIENTO TOTAL</div></div>${ringSvg(s.pct)}</div>
+    </div>
+
+    <div class="slabel">Cumplimiento por hábito</div>
+    <div id="habit-breakdown"></div>
+
+    <div class="slabel" style="margin-top:1.6rem">Calendario del semestre — 5 ago al 5 dic</div>
+    ${renderHeatmap(s.heatmap)}
+  `;
+
+  const breakdown = document.getElementById('habit-breakdown');
+  breakdown.innerHTML = Object.values(s.perHabit).map((h,idx) => {
+    const pct = h.req ? Math.round((h.done/h.req)*100) : 0;
+    return `<div class="habit-bar-row" style="animation-delay:${idx*0.05}s">
+      <div class="habit-bar-top"><span class="habit-bar-name">${h.label}</span><span class="habit-bar-pct">${pct}%</span></div>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${pct}%; animation-delay:${idx*0.08}s"></div></div>
+    </div>`;
+  }).join('');
+}
+
+async function init(){
+  renderTabs();
+  document.getElementById('panels').innerHTML = TABS.map(t=>`<div class="panel${t.id==='habitos'?' on':''}" id="panel-${t.id}"></div>`).join('');
+  renderHorario();
+  document.getElementById('panel-habitos').innerHTML = '<div class="loading-state">Cargando tus hábitos…</div>';
+  document.getElementById('panel-progreso').innerHTML = '<div class="loading-state">Cargando tu progreso…</div>';
+  data = await loadData();
+  renderHabitos();
+  renderProgreso();
+}
+init();
 </script>
 </body>
 </html>
