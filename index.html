@@ -12,57 +12,57 @@
 
 :root {
   /* -- surface -- */
-  --paper:   #f5f6f1;
-  --paper2:  #ecede6;
+  --paper:   #ffffff;
+  --paper2:  #e8f3ff;
   --card:    #ffffff;
-  --ink:     #1c2130;
-  --ink-soft:#3d4456;
-  --muted:   #767f8a;
-  --faint:   #a4abb2;
-  --line:    #e3e4dd;
-  --line2:   #d7d9d0;
+  --ink:     #182334;
+  --ink-soft:#44506a;
+  --muted:   #6f7b8f;
+  --faint:   #9aa7b7;
+  --line:    #dcecff;
+  --line2:   #c8defa;
 
-  /* -- primary accents (más vivos) -- */
-  --copper:      #e57c1f;
-  --copper-dark: #b85a00;
-  --copper-lt:   #fff0dd;
-  --copper-brd:  #ffbf73;
+  /* -- primary accents */
+  --copper:      #1d7cff;
+  --copper-dark: #0059d6;
+  --copper-lt:   #eaf4ff;
+  --copper-brd:  #9cc7ff;
 
-  --indigo:      #4f63ff;
-  --indigo-dark: #3245d6;
-  --indigo-lt:   #eef1ff;
-  --indigo-brd:  #b9c5ff;
+  --indigo:      #0059ff;
+  --indigo-dark: #003fb8;
+  --indigo-lt:   #edf4ff;
+  --indigo-brd:  #9fc2ff;
 
-  /* -- category / strata palette (más vibrante) -- */
-  --sport:       #00b894;
-  --sport-lt:    #ddfff7;
-  --sport-brd:   #71e7cf;
+  /* -- category / strata palette */
+  --sport:       #00c28a;
+  --sport-lt:    #e7fff6;
+  --sport-brd:   #82e8c8;
 
   --academic:    #2979ff;
-  --academic-lt: #e9f2ff;
-  --academic-brd:#8fbfff;
+  --academic-lt: #edf4ff;
+  --academic-brd:#9dc5ff;
 
-  --strategy:    #9c4dff;
-  --strategy-lt: #f3e9ff;
-  --strategy-brd:#d0a8ff;
+  --strategy:    #0098ff;
+  --strategy-lt: #ebf8ff;
+  --strategy-brd:#9fdcff;
 
-  --workshop:    #7acb20;
-  --workshop-lt: #f1ffe2;
-  --workshop-brd:#b9ea74;
+  --workshop:    #84d500;
+  --workshop-lt: #f3ffe3;
+  --workshop-brd:#c8f17d;
 
-  --rest:        #7b8794;
-  --rest-lt:     #f1f4f7;
-  --rest-brd:    #c6d0da;
+  --rest:        #7f8da0;
+  --rest-lt:     #f3f6f9;
+  --rest-brd:    #d4dde8;
 
-  --mind:        #ff8a1f;
-  --mind-lt:     #fff1df;
-  --mind-brd:    #ffc57c;
+  --mind:        #00b8ff;
+  --mind-lt:     #ebfaff;
+  --mind-brd:    #98e1ff;
 
   --r:    18px;
   --r-sm: 12px;
   --pill: 999px;
 }
-
+  
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
 }
@@ -70,10 +70,10 @@
 html { font-size: 15px; -webkit-text-size-adjust: 100%; }
 body {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-  background-color: var(--paper);
+  background-color: #ffffff;
   background-image:
-    linear-gradient(var(--paper2) 1px, transparent 1px),
-    linear-gradient(90deg, var(--paper2) 1px, transparent 1px);
+    linear-gradient(#e8f3ff 1px, transparent 1px),
+    linear-gradient(90deg, #e8f3ff 1px, transparent 1px);
   background-size: 28px 28px;
   background-position: -1px -1px;
   color: var(--ink);
