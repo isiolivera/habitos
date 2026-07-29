@@ -13,56 +13,39 @@
 :root {
   /* -- surface -- */
   --paper:   #ffffff;
-  --paper2:  #e8f3ff;
+  --paper2:  #e9f5ff;
   --card:    #ffffff;
-  --ink:     #182334;
-  --ink-soft:#44506a;
-  --muted:   #6f7b8f;
-  --faint:   #9aa7b7;
+  --ink:     #1c2130;
+  --ink-soft:#3d4456;
+  --muted:   #767f8a;
+  --faint:   #a4abb2;
   --line:    #dcecff;
-  --line2:   #c8defa;
+  --line2:   #c9dfff;
 
-  /* -- primary accents */
-  --copper:      #1d7cff;
-  --copper-dark: #0059d6;
-  --copper-lt:   #eaf4ff;
-  --copper-brd:  #9cc7ff;
+  /* -- primary accents -- */
+  --copper:      #2d7fff;
+  --copper-dark: #145ee0;
+  --copper-lt:   #edf5ff;
+  --copper-brd:  #a7caff;
 
-  --indigo:      #0059ff;
-  --indigo-dark: #003fb8;
-  --indigo-lt:   #edf4ff;
-  --indigo-brd:  #9fc2ff;
+  --indigo:     #006dff;
+  --indigo-dark:#004fc7;
+  --indigo-lt:  #edf5ff;
+  --indigo-brd: #a6c9ff;
 
-  /* -- category / strata palette */
-  --sport:       #00c28a;
-  --sport-lt:    #e7fff6;
-  --sport-brd:   #82e8c8;
-
-  --academic:    #2979ff;
-  --academic-lt: #edf4ff;
-  --academic-brd:#9dc5ff;
-
-  --strategy:    #0098ff;
-  --strategy-lt: #ebf8ff;
-  --strategy-brd:#9fdcff;
-
-  --workshop:    #84d500;
-  --workshop-lt: #f3ffe3;
-  --workshop-brd:#c8f17d;
-
-  --rest:        #7f8da0;
-  --rest-lt:     #f3f6f9;
-  --rest-brd:    #d4dde8;
-
-  --mind:        #00b8ff;
-  --mind-lt:     #ebfaff;
-  --mind-brd:    #98e1ff;
+  /* -- category / strata palette -- */
+  --sport:    #2f8f76;  --sport-lt:    #e1f2ec;  --sport-brd:    #a7d9c8;
+  --academic: #3d5a80;  --academic-lt: #e6edf5;  --academic-brd: #b7c9de;
+  --strategy: #00a6ff;  --strategy-lt: #edfaff;  --strategy-brd: #99e1ff;
+  --workshop: #74883f;  --workshop-lt: #edf1e1;  --workshop-brd: #cad8ab;
+  --rest:     #83868c;  --rest-lt:     #eef0f0;  --rest-brd:     #d3d5d7;
+  --mind:     #00b8ff;  --mind-lt:     #ecfaff;  --mind-brd:     #eac795;
 
   --r:    18px;
   --r-sm: 12px;
   --pill: 999px;
 }
-  
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
 }
@@ -72,8 +55,8 @@ body {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   background-color: #ffffff;
   background-image:
-    linear-gradient(#e8f3ff 1px, transparent 1px),
-    linear-gradient(90deg, #e8f3ff 1px, transparent 1px);
+    linear-gradient(#e7f2ff 1px, transparent 1px),
+    linear-gradient(90deg, #e7f2ff 1px, transparent 1px);
   background-size: 28px 28px;
   background-position: -1px -1px;
   color: var(--ink);
@@ -287,6 +270,15 @@ input:checked + .slider::before { transform: translateX(18px); }
 }
 
 .btn-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:1.4rem; }
+
+/* Vibrant category cards */
+.activity.deporte,.cat-deporte{background:#e9fff2!important;border-left:6px solid #7EE787!important}
+.activity.ramo,.cat-ramo{background:#eef8ff!important;border-left:6px solid #6EC6FF!important}
+.activity.estrategia,.cat-estrategia{background:#f4edff!important;border-left:6px solid #B388FF!important}
+.activity.taller,.cat-taller{background:#fff9df!important;border-left:6px solid #FFD54F!important}
+.activity.habito,.cat-habito{background:#ffeaf4!important;border-left:6px solid #FF9ECF!important}
+.activity.descanso,.cat-descanso{background:#f3f6fb!important;border-left:6px solid #C9D4E5!important}
+.activity,[class*=activity],[class*=schedule-item]{border-radius:14px;padding:10px 12px;font-weight:700}
 </style>
 </head>
 <body>
