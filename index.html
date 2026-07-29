@@ -15,15 +15,15 @@
   --grid-line: #fdf2f5;
   --surface: #ffffff;
   --card: #ffffff;
-  
+
   --ink: #1e293b;
   --ink-soft: #475569;
   --muted: #64748b;
   --faint: #94a3b8;
-  
+
   --line: #f1f5f9;
   --line2: #e2e8f0;
-  
+
   --pink-primary: #F93F7C;
   --pink-light: #FCE7F3;
   --pink-border: #FBCFE8;
@@ -179,7 +179,6 @@ h1 .accent-pink { color: var(--pink-primary); }
 .step-top { display:flex; align-items:center; flex-wrap:wrap; gap: 8px; }
 .step-name { font-size: 14.5px; font-weight: 700; color: var(--cat-hex, var(--ink)); }
 
-/* Hábitos con variables de acento individuales (Soporte específico para Mindfulness) */
 .habit-card {
   --accent: var(--pink-primary);
   --accent-light: var(--pink-light);
@@ -232,7 +231,7 @@ input:checked + .slider::before { transform: translateX(18px); }
 .wdot {
   width: 30px; height: 30px; border-radius: 50%; margin: 0 auto;
   background: var(--surface); border: 2px solid var(--line);
-  display: flex; align-items: center; justify-content: center; font-size: 0; 
+  display: flex; align-items: center; justify-content: center; font-size: 0;
   transition: all .3s cubic-bezier(.34,1.56,.64,1);
 }
 .wdot.done { background: var(--pink-primary); border-color: var(--pink-primary); box-shadow: 0 4px 12px rgba(249, 63, 124, 0.35); transform: scale(1.05); }
@@ -296,19 +295,27 @@ function todayStr(d){
 function dateFromStr(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
 function weekdayOf(s){ return dateFromStr(s).getDay(); }
 
+// ---------- ALMACENAMIENTO: localStorage (correcto para un sitio web real) ----------
+// NOTA: la versión anterior usaba window.storage, que SOLO existe dentro de los
+// artifacts de Claude.ai. En un sitio hospedado en GitHub Pages eso no existe,
+// y por eso nada se estaba guardando. localStorage sí es estándar de cualquier
+// navegador y funciona correctamente en un sitio real como el tuyo.
 const STORAGE_KEY = 'isidora-sistema-2026';
-async function loadData(){
+
+function loadData(){
   try{
-    const res = await window.storage.get(STORAGE_KEY, false);
-    if(res && res.value) return JSON.parse(res.value);
-  }catch(e){}
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){
+    console.error('Error cargando datos:', e);
+  }
   return { habitos: {}, lastSaved: null };
 }
-async function saveData(){
+function saveData(){
   try{
     data.lastSaved = new Date().toISOString();
-    const ok = await window.storage.set(STORAGE_KEY, JSON.stringify(data), false);
-    return !!ok;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    return true;
   }catch(e){
     console.error('Error guardando datos:', e);
     return false;
@@ -320,7 +327,7 @@ function getLastSaved(){
   return isNaN(d) ? null : d;
 }
 
-let data = { habitos: {}, lastSaved: null };
+let data = loadData();
 const TABS = [ {id:'habitos', label:'Hábitos'}, {id:'horario', label:'Horario'}, {id:'progreso', label:'Progreso'} ];
 
 function renderTabs(){
@@ -482,9 +489,9 @@ function renderHabitos(){
     list.appendChild(card);
   });
 
-  async function afterToggle(cardEl){
+  function afterToggle(cardEl){
     cardEl.classList.remove('pop'); void cardEl.offsetWidth; cardEl.classList.add('pop');
-    const ok = await saveData();
+    const ok = saveData();
     if(ok){ flash('habit-status', '✓ Guardado'); }
     else { flash('habit-status', '⚠ Error al guardar'); }
     const nowComplete = dayFullyCompleted(currentDate);
@@ -804,13 +811,10 @@ function renderProgreso(){
   }).join('');
 }
 
-async function init(){
+function init(){
   renderTabs();
   document.getElementById('panels').innerHTML = TABS.map(t=>`<div class="panel${t.id==='habitos'?' on':''}" id="panel-${t.id}"></div>`).join('');
   renderHorario();
-  document.getElementById('panel-habitos').innerHTML = '<div class="loading-state">Cargando hábitos…</div>';
-  document.getElementById('panel-progreso').innerHTML = '<div class="loading-state">Cargando progreso…</div>';
-  data = await loadData();
   renderHabitos();
   renderProgreso();
 }
