@@ -371,7 +371,7 @@ function fireConfetti(){
   }
 }
 
-const DEPORTE_OPTIONS = ['Prep. Física','Halterofilia','Nike Run Club','Caminar','Padel','Cerro','Otro'];
+const DEPORTE_OPTIONS = ['Atletismo','Escalada','Nike Run Club','Caminar','Padel','Cerro','Otro'];
 const HABITOS_DEF = [
   {id:'deporte', label:'Deporte', type:'multi', options:DEPORTE_OPTIONS, dias:'all'},
   {id:'temporizador', label:'Temporizador 30 min sin celular', type:'check', dias:'all'},
@@ -558,14 +558,15 @@ function flash(id, msg){
 const ACTIVITY_CATEGORY = {
   'Mindfulness': 'mind',
   'Mindfulness (opcional)': 'mind',
-  'Preparación Física': 'sport',
+  'Atletismo': 'sport',
   'Manejo de Riesgo en Proyectos': 'academic',
-  'Halterofilia': 'sport',
+  'Escalada': 'sport',
   'Gestión Estratégica de Empresas Mineras': 'strategy',
   'Almuerzo': 'rest',
   'Taller de Ing. Industrial en Construcción': 'workshop',
   'Taller de Ing. Ind. en Construcción *': 'workshop',
   'Nike Run Club': 'sport',
+  'Padel': 'sport',
   'Evaluación de Proyectos': 'academic',
   'Caminar / Padel / Cerro / Nike Run Club / Otro': 'sport',
   'Sin exigencia de deporte': 'rest',
@@ -584,33 +585,33 @@ const LEGEND_LABEL = { sport:'Deporte', academic:'Ramo', strategy:'Estrategia', 
 const HORARIO = {
   lun: {label:'Lunes', items:[
     {t:'8:00–8:10', n:'Mindfulness'},
-    {t:'8:20–9:30', n:'Preparación Física'},
+    {t:'8:20–9:30', n:'Atletismo'},
     {t:'9:40–10:50', n:'Manejo de Riesgo en Proyectos'},
-    {t:'11:00–12:10', n:'Halterofilia'},
+    {t:'11:00–12:10', n:'Escalada'},
     {t:'12:20–13:30', n:'Gestión Estratégica de Empresas Mineras'},
     {t:'13:30–14:50', n:'Almuerzo'},
     {t:'14:50–16:10', n:'Taller de Ing. Industrial en Construcción'},
   ]},
   mar: {label:'Martes', items:[
-    {t:'Libre', n:'Nike Run Club'},
+    {t:'17:00', n:'Padel'},
     {t:'8:00–8:10', n:'Mindfulness (opcional)'},
   ]},
   mie: {label:'Miércoles', items:[
     {t:'8:00–8:10', n:'Mindfulness'},
-    {t:'8:20–9:30', n:'Preparación Física'},
+    {t:'8:20–9:30', n:'Atletismo'},
     {t:'9:40–10:50', n:'Manejo de Riesgo en Proyectos'},
-    {t:'11:00–12:10', n:'Halterofilia'},
+    {t:'11:00–12:10', n:'Escalada'},
     {t:'12:20–13:30', n:'Gestión Estratégica de Empresas Mineras'},
   ]},
   jue: {label:'Jueves', items:[
-    {t:'Libre', n:'Nike Run Club'},
+    {t:'17:00', n:'Padel'},
     {t:'8:00–8:10', n:'Mindfulness (opcional)'},
   ]},
   vie: {label:'Viernes', items:[
     {t:'8:00–8:10', n:'Mindfulness'},
-    {t:'8:20–9:30', n:'Preparación Física'},
+    {t:'8:20–9:30', n:'Atletismo'},
     {t:'9:40–10:50', n:'Taller de Ing. Ind. en Construcción *'},
-    {t:'11:00–12:10', n:'Halterofilia'},
+    {t:'11:00–12:10', n:'Escalada'},
     {t:'13:30–14:50', n:'Almuerzo'},
     {t:'14:50–18:40', n:'Evaluación de Proyectos'},
   ]},
