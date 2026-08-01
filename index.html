@@ -393,6 +393,7 @@ function dayFullyCompleted(dateStr){
 }
 function computeStreak(){
   let streak = 0;
+  const realToday = todayStr();
   let d = new Date();
   for(let i=0;i<3650;i++){
     const ds = todayStr(d);
@@ -400,7 +401,7 @@ function computeStreak(){
     const hasReq = HABITOS_DEF.some(h=>isObligatorio(h,wd));
     if(hasReq){
       if(dayFullyCompleted(ds)){ streak++; }
-      else if(ds===todayStr() && !data.habitos[ds]){ }
+      else if(ds===realToday){ /* hoy aun no termina: no cuenta ni rompe la racha, tenga datos parciales o no */ }
       else { break; }
     }
     d.setDate(d.getDate()-1);
